@@ -1,8 +1,8 @@
 # Prolog
 
-> Reporsitory for Practicing prolog
+> Reporsitory for Practicing prolog  
 > Name: Xinhai Zou  
-> Github: SeanMWX
+> Github: SeanMWX  
 > <font color="red">Please DO NOT COPY ANYTHING WITHOUT PERMISSIONS!</font>
 
 ## Installation 
