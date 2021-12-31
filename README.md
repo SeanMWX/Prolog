@@ -15,7 +15,7 @@ git clone https://github.com/SeanMWX/Prolog.git
 ## Directory & file structure
 
 ```
-Python
+Java
 │   README.md                         % description and important points for using this repository
 │
 └───exercises                         % root folder for prolog exercises
