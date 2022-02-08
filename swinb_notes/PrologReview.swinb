@@ -1,0 +1,3689 @@
+<div class="notebook">
+
+<div class="nb-cell html" name="htm11">
+<h1> 1.1 Defining relations by facts </h1>
+</div>
+
+<div class="nb-cell markdown" name="md1">
+Facts:
+</div>
+
+<div class="nb-cell program" data-background="true" name="p1">
+% facts:
+% parent relatinoship, binary
+parent(pam, bob).
+parent(tom, bob).
+parent(bob, ann).
+parent(bob, pat).
+parent(pat, jim).
+parent(tom, liz).
+
+% sex relatinoship, unary
+female(pam).
+female(liz).
+female(pat).
+female(ann).
+male(tom).
+male(bob).
+male(jim).
+
+% rules:
+grandparent(X, Y) :-
+    parent(X, Z),
+    parent(Z, Y).
+
+mother(X, Y) :-
+    female(X),
+    parent(X, Y).
+
+father(X, Y) :-
+    male(X),
+    parent(X, Y).
+
+sublings(X, Y) :-
+    % X \= Y, should be put after instaniation, \= must be instantiated
+    parent(P, X),
+    parent(P, Y),
+    X \= Y.
+
+sister(X, Y) :-
+    female(X),
+    sublings(X, Y).
+
+happy(X) :-
+    parent(X, _).
+
+hastwochildren(X) :-
+    parent(X, Y),
+    sister(Y, _).
+
+grandchild(X, Y) :-
+    parent(Y, Z),
+    parent(Z, X).
+
+aunt(X, Y) :-
+    sister(Z, X),
+    parent(Z, Y).
+
+% recursive
+ancestor(X, Y) :-
+    parent(X, Y).
+
+ancestor(X, Y) :-
+    parent(Z, Y),
+    ancestor(X, Z).
+</div>
+
+<div class="nb-cell query" name="q1">
+parent(X, bob).
+</div>
+
+<div class="nb-cell query" name="q4">
+grandparent(pam, bob).
+</div>
+
+<div class="nb-cell query" name="q2">
+grandparent(pam, pat).
+</div>
+
+<div class="nb-cell query" name="q3">
+grandparent(pam, jim).
+</div>
+
+<div class="nb-cell html" name="htm1">
+Do Ann &amp; Pat have same parents? <br> Yes, bob.
+</div>
+
+<div class="nb-cell query" name="q5">
+parent(X, ann), parent(X, pat).
+</div>
+
+<div class="nb-cell html" name="htm2">
+<b>Exercises</b> <br>
+1.1 Assuming the parent relation as defined in this section, what will be Prolog's answers to the following questions? <br>
+(a) ?-parent(jim, X). <br>
+<font color="blue">false </font><br> 
+(b) ?-parent(X, jim). <br>
+<font color="blue">pat </font><br> 
+(c) ?-parent(pam, X), parent(X, pat). <br>
+<font color="blue">X=bob </font><br> 
+(d) ?-parent(pam, X), parent(X, Y), parent(Y, jim). <br>
+<font color="blue">X=bob, Y=pat </font><br>
+</div>
+
+<div class="nb-cell query" name="q6">
+parent(jim, X).
+</div>
+
+<div class="nb-cell query" name="q7">
+parent(X, jim).
+</div>
+
+<div class="nb-cell query" name="q8">
+parent(pam, X), parent(X, pat).
+</div>
+
+<div class="nb-cell query" name="q9">
+parent(pam, X), parent(X, Y), parent(Y, jim).
+</div>
+
+<div class="nb-cell html" name="htm3">
+<b>Exercises</b> <br>
+1.2 Formulate in Prolog the following questions about the parent relation: <br>
+(a) Who is Pat's parent? <br>
+<font color="blue"> 
+parent(Parent, pat).
+</font><br>
+(b) Does Liz have a child? <br>
+<font color="blue"> 
+parent(liz, _).
+</font><br>
+(c) Who is Pat's grandparent? <br>
+<font color="blue"> 
+parent(GrandParent, X), (X, pat).
+</font>
+</div>
+
+<div class="nb-cell query" name="q10">
+parent(Parent,pat).
+</div>
+
+<div class="nb-cell query" name="q11">
+parent(liz, _).
+</div>
+
+<div class="nb-cell query" name="q12">
+parent(GrandParent, X), parent(X, pat).
+</div>
+
+<div class="nb-cell html" name="htm10">
+<h1> 1.2 Defining relations by rules </h1>
+</div>
+
+<div class="nb-cell html" name="htm4">
+How are rules actually used by Prolog?
+</div>
+
+<div class="nb-cell query" name="q13">
+mother(pam, bob).
+</div>
+
+<div class="nb-cell query" name="q15">
+sublings(pat, X).
+</div>
+
+<div class="nb-cell html" name="htm5">
+Illustrate the sister relation:
+</div>
+
+<div class="nb-cell query" name="q14">
+sister(pat, ann).
+</div>
+
+<div class="nb-cell html" name="htm6">
+<b>Exercises</b> <br>
+1.3 Translate the following statement into Porlog rules: <br>
+(a) Everybody who has a child is happy (introduce a one-arguement relation happy). <br>
+(b) For all X, if X has a child who has a sister then X has two children (introduce new relation hastwochildren).
+</div>
+
+<div class="nb-cell query" name="q16">
+happy(X).
+</div>
+
+<div class="nb-cell query" name="q17">
+hastwochildren(X).
+</div>
+
+<div class="nb-cell html" name="htm7">
+<b>Exercises</b> <br>
+1.4 Define the relation grandchild using the parent relation. Hint: It will be similar to the grandparent relation.
+</div>
+
+<div class="nb-cell query" name="q18">
+grandchild(Grandchild, GrandParent).
+</div>
+
+<div class="nb-cell html" name="htm8">
+<b>Exercises</b> <br>
+1.5 Define the relation aunt(X, Y) in terms of relations parent and sister. As an aid you can first draw a diagram in the style of Figure 1.3 for the aunt relation.
+</div>
+
+<div class="nb-cell query" name="q19">
+aunt(X, Y).
+</div>
+
+<div class="nb-cell html" name="htm9">
+<h1> 1.3 Recursive rules </h1>
+</div>
+
+<div class="nb-cell html" name="htm12">
+Thing is going to be interesting. <br>
+(a) base line <br>
+(b) recursive line
+</div>
+
+<div class="nb-cell query" name="q20">
+ancestor(pam,X).
+</div>
+
+<div class="nb-cell html" name="htm13">
+<b>Exercises</b> <br>
+1.6 Consider the following alternative definition of the ancestor relation:<br>
+<br><font color="red">
+  ancestor(X,Z) :- <br>
+  parent(X,Z). <br>
+  <br>
+  ancestor(X,Z) :- <br>
+  parent(Y,Z), <br>
+  ancestor(X,Y).
+</font><br><br>
+Does this also seem to be a correct definiiton of ancestors? Can you modify the diagram of Figure 1.7 so that it would correspond to this new definition?<br>
+<font color="blue"> 
+  Yes, this is what I wrote.
+</font>
+</div>
+
+<div class="nb-cell html" name="htm14">
+<h1> 1.4 Running the program with a Prolog system </h1>
+</div>
+
+<div class="nb-cell html" name="htm15">
+run the program "[family]."
+</div>
+
+<div class="nb-cell html" name="htm16">
+<h1> 1.5 How Prolog answers questions </h1>
+</div>
+
+<div class="nb-cell html" name="htm17">
+<b>Exercises</b> <br>
+1.7 Try to understand how Prolog derives answers to the following questions. Try to draw the corresponding derivation digrams in the style of Figure 1.9. Will any backtracking occur at particular questions? <br>
+(a) ?-parent(pam,bob). <br>
+<font color="blue">
+  No backtracking.
+</font><br>
+(b) ?-mother(pam,bob). <br>
+<font color="blue">
+  No backtracking.
+</font><br>
+(c) ?-grandparent(pam, ann). <br>
+<font color="blue">
+  No backtracking.
+</font><br>
+(d) ?-grandparent(bob, jim). <br>
+<font color="blue">
+  Contains backtracking. <br>
+  When first attempt, parent(bob, ann), parent(ann, X) cannot find answer, so backtracks to the parent(bob, pat) and then parent(pat, jim).
+</font>
+</div>
+
+<div class="nb-cell html" name="htm18">
+<h1> 1.6 Declarative and procedural meaning of programs </h1>
+</div>
+
+<div class="nb-cell html" name="htm19">
+two level: <br>
+(1) the declaratvie meaning: what's the output
+(2) the procedural meaning: how the program runs
+</div>
+
+<div class="nb-cell html" name="htm20">
+<h1> 1.7 A robot's world - preview of things to come </h1>
+</div>
+
+<div class="nb-cell html" name="htm21">
+<h1> 1.8 Crosswords, maps and schedules </h1>
+</div>
+
+<div class="nb-cell html" name="htm22">
+<h1> Chapter 1: Summary </h1>
+</div>
+
+<div class="nb-cell html" name="htm23">
+1. Prolog programming consists of defining relations and querying about relations. <br>
+2. A program consits of clauses. There are of three types: <br>
+(a) facts: only head <br>
+(b) rules: head + body <br>
+(c) questions: only body <br>
+3. A procedure is a set of claueses about the same relation. <br>
+4. <font color="red">BACKTRACKING</font> <br>
+5. Two types of meaning of Prolog programs: <br>
+(a) declarative meaning <br>
+(b) procedural meaning <br>
+</div>
+
+<div class="nb-cell html" name="htm24">
+<h1> 2.1 Data objects </h1>
+</div>
+
+<div class="nb-cell html" name="htm25">
+<b>1. Atoms: </b><br>
+(a) Strings of letters, digits and the underscore character '_', strating with a lower-case letter <br>
+(b) Strings of special characters<br>
+(c) Strings of charcters enclosed in single quotes. 'Tom' <br>
+<b>2. Number: </b><br>
+(a) Integer <br>
+(b) Real number <br>
+<b>3. Variables: </b><br>
+(a) Varaibles are strings of letters, digits and underscore characters. <br>
+(b) Used-once variable: '_' is enough.<br> 
+P.S.: each time a '_' in the clause it represents a new anonymous variable <br>
+visible(Object) :- see(Object, _, _). == visible(Object) :- see(Object, X, Y). <br>
+P.S.: the lexical scope of variable is one clause. <br>
+<b>4. Structure </b><br>
+(a) functor = name <br>
+P.S.: the functor at the root = principle functor <br>
+(b) arguements = attributes <br>
+Each funtor is defined by: the name + the arity <br>
+</div>
+
+<div class="nb-cell html" name="htm26">
+<b>Exercises</b> <br>
+2.1 Which of the following are syntactically correct Prolog objects? What kinds of object are they (atom, number, variable, structure)? <br>
+(a) Diana - variable <br>
+(b) diana - atom <br>
+(c) 'Diana' - atom <br>
+(d) _diana - atom <br>
+(e) 'Diana goes south' - atom <br>
+(f) goes(diana, south) - structure <br>
+(g) 45 - number <br>
+(h) 5(X,Y) - X <br>
+(i) +(north, west) - structure <br>
+(j) three(Black(Cats)) - X <br>
+2.2 Suggest a representation for rectangles, squares and circles as structured Prolog objects.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p2">
+% point
+point(_, _).
+% rectangles
+rect(point(X1,Y1),
+     point(X2,Y1),
+     point(X1,Y2),
+     point(X2,Y2)
+     ).
+% squares
+square(point(X1,Y1),
+       point(X2,Y1),
+       point(X1,Y2),
+       point(X2,Y2)
+       ).
+% circles
+circle(point(_,_), radius).
+% equalPoint
+equalPoint(X,Y,point(X,Y)) :- X = Y.
+</div>
+
+<div class="nb-cell query" name="q21">
+P1 = point(1,2),
+P2 = point(3,2),
+P3 = point(1,4),
+P4 = point(3,4),
+P5 = point(100,100),
+Rect = rect(P1,P2,P3,P4),
+Cir = circle(P1, radius),
+Rect2 = rect(P1,P2,P3,P5).
+</div>
+
+<div class="nb-cell query" name="q22">
+equalPoint(1,1,P).
+</div>
+
+<div class="nb-cell html" name="htm27">
+<h1> 2.2 Matching </h1>
+</div>
+
+<div class="nb-cell html" name="htm28">
+If matching: <br>
+(a) identical <br>
+(b) inistantion - functor should be equal <br>
+</div>
+
+<div class="nb-cell query" name="q23">
+date(D, M, 2001) = date(D1, may, Y1),
+date(D, M, 2001) = date(15, M, Y)
+</div>
+
+<div class="nb-cell html" name="htm29">
+More details, if S and T is matching: <br>
+(a) If S and T are constants = S and T match only same value <br>
+(b) If S is variable and T is anything = always match <br>
+(c) If S and T are structures then they match only if, <br>
+c.1 S and T have the same principal functor <br>
+c.2 all their corresponding components match <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p3">
+% check whehter a lien horizontal or vertical
+% line
+line(point(_,_), point(_,_)).
+% horizontal
+% same to horizontal(line(point(X,Y1), point(X,Y2))).
+horizontal(line(point(_,Y1), point(_,Y2))) :- Y1 = Y2.
+% vertical
+vertical(line(point(X1,_),point(X2,_))) :- X1 = X2.
+</div>
+
+<div class="nb-cell query" name="q24">
+P1 = point(1,2),
+P2 = point(2,2),
+L1 = line(P1,P2),
+horizontal(L1).
+</div>
+
+<div class="nb-cell query" name="q25">
+% This is considered as 1 clause
+P1 = point(1,2),
+P2 = point(2,2),
+P3 = point(1,1),
+L1 = line(P1,P2),
+L2 = line(P1,P3),
+% vertical(L1),
+vertical(L2).
+</div>
+
+<div class="nb-cell query" name="q26">
+vertical(line(point(2,3), P)).
+% answer: P = point(2, _1644)
+% here _1644 is an uninstantiated variable
+</div>
+
+<div class="nb-cell query" name="q27">
+vertical(L), horizontal(L).
+% answer: L = line(point(_1646,_1648), point(_1646,_1648)).
+% it means L = line(point(X,Y), point(X,Y)).
+% derived answer by matching
+</div>
+
+<div class="nb-cell html" name="htm30">
+<b> Exercise </b> <br>
+2.3 Will the following matching operations successd or fail? If they succeed, what are the resulting instantiations of variables? <br>
+(a) point(A,B) = point(1,2) <br>
+<font color="blue">A = 1, B = 2</font> <br>
+(b) point(A,B) = point(X,Y,Z) <br>
+<font color="blue"> No! </font> <br>
+(c) plus(2,2) = 4 <br>
+<font color="blue"> No! </font> <br>
+(d) +(2,D) = +(E,2) <br>
+<font color="blue"> E=D, E=2 </font> <br>
+(e) triangle(point(-1,0),P2,P3) = triangle(P1,point(1,0),point(0,Y)) <br>
+<font color="blue"> 
+P1 = point(-1,0) <br>
+P2 = point(1,0) <br>
+P3 = point(0,Y) 
+</font> <br>
+P.S.: Family? How would you describe this family? <br>
+</div>
+
+<div class="nb-cell query" name="q28">
+point(A,B) = point(1,2).
+</div>
+
+<div class="nb-cell query" name="q29">
+oint(A,B) = point(X,Y,Z).
+</div>
+
+<div class="nb-cell query" name="q30">
+plus(2,2) = 4.
+</div>
+
+<div class="nb-cell query" name="q31">
++(2,D) = +(E,2).
+</div>
+
+<div class="nb-cell query" name="q32">
+triangle(point(-1,0),P2,P3) = triangle(P1,point(1,0),point(0,Y)).
+</div>
+
+<div class="nb-cell html" name="htm31">
+<b> Exercise </b> <br>
+2.4 Using the representation for line segements as described in this section, write a term that represents any vertical line segment at x = 5. <br>
+</div>
+
+<div class="nb-cell query" name="q33">
+L = line(point(5,Y1), point(5,Y2)),
+vertical(L).
+</div>
+
+<div class="nb-cell html" name="htm33">
+<b> Exercise </b> <br>
+2.5 Assume that a rectangle is represented by the term rectangle(P1,P2,P3,P4) where the P's are the vertices of the rectangle positively ordered. Define the relation:<br> regular(R) <br>which is true if R is a rectangle whose sides are vertical and horizontal.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p4">
+% regular
+regular(rect(point(X1,Y1), point(X2,Y2), point(X3,Y3), point(X4,Y4))) :-
+    vertical(line(point(X1,Y1), point(X3,Y3))),
+    vertical(line(point(X2,Y2), point(X4,Y4))),
+    horizontal(line(point(X1,Y1), point(X2,Y2))),
+    horizontal(line(point(X3,Y3), point(X4,Y4))).
+</div>
+
+<div class="nb-cell query" name="q34">
+P1 = point(1,2),
+P2 = point(3,2),
+P3 = point(1,4),
+P4 = point(3,4),
+P5 = point(100,100),
+Rect = rect(P1,P2,P3,P4),
+regular(Rect).
+</div>
+
+<div class="nb-cell query" name="q35">
+P1 = point(1,2),
+P2 = point(3,2),
+P3 = point(1,4),
+P4 = point(3,4),
+P5 = point(100,100),
+Rect = rect(P1,P2,P3,P5),
+regular(Rect).
+</div>
+
+<div class="nb-cell html" name="htm32">
+<h1> 2.3 Declarative meaning of Prolog programs </h1> <br>
+</div>
+
+<div class="nb-cell html" name="htm34">
+Declarative + Procedural <br> 
+(1) Declarative: logical meaning <br>
+(2) Procedural: sequence <br>
+Conjunction + Disjunction <br>
+(1) comma, ',' <br>
+(2) semicolon, ';' <br>
+</div>
+
+<div class="nb-cell html" name="htm35">
+<b> Exercise </b> <br>
+2.6 Consider the following program: <br>
+How will Prolog answer the following questions? Whenever several answers are possible, give at least two.
+</div>
+
+<div class="nb-cell program" name="p5">
+f(1, one).
+f(s(1), two).
+f(s(s(1)), three).
+f(s(s(s(X))), N) :-
+    f(X, N).
+</div>
+
+<div class="nb-cell query" name="q36">
+f(s(1),A).
+</div>
+
+<div class="nb-cell query" name="q37">
+f(s(s(1)), two).
+</div>
+
+<div class="nb-cell query" name="q38">
+f(s(s(s(s(s(s(1)))))), C).
+</div>
+
+<div class="nb-cell query" name="q39">
+f(D, three).
+</div>
+
+<div class="nb-cell html" name="htm36">
+<b> Exercise </b> <br>
+2.7 The following program says that two people are relatives if <br>
+(a) one is an ancestor of the other, or <br>
+(b) they have a common ancestor, or <br>
+(c) they have a common successor: <br>
+</div>
+
+<div class="nb-cell program" name="p6">
+relatives(X,Y) :-
+    ancestor(X, Y)
+    ;   
+    ancestor(Y, X)
+    ;   
+    ancestor(Z, X),
+    ancestor(Z, Y)
+    ;   
+    ancestor(X, Z),
+    ancestor(Y, Z).
+</div>
+
+<div class="nb-cell html" name="htm37">
+<b> Exercise </b> <br>
+2.8 Rewrite the following program without using the semicon notation. <br>
+</div>
+
+<div class="nb-cell program" name="p7">
+/*translate(Number, Word) :-
+    Number = 1, Word = one
+    ;   
+    Number = 2, Word = two
+    ;   
+    Number = 3, Word = three.*/
+translate(1, one).
+translate(2, two).
+translate(3, three).
+</div>
+
+<div class="nb-cell query" name="q40">
+translate(A, B)
+</div>
+
+<div class="nb-cell html" name="htm38">
+<h1> 2.4 Procedural meaning </h1> <br>
+</div>
+
+<div class="nb-cell program" name="p8">
+meat(beef).
+meat(chicken).
+meat(fish).
+wine(red).
+wine(rose).
+wine(white).
+</div>
+
+<div class="nb-cell query" name="q41">
+meat(X), wine(Y).
+</div>
+
+<div class="nb-cell html" name="htm39">
+When backtracking, all the rest of whole part will be abandoned. Even for something have been done.
+</div>
+
+<div class="nb-cell html" name="htm40">
+<b> Exercise </b> <br>
+2.9 Consider the program in Figure 2.10 and simulate, in the style of Figure 2.10, Prolog's execution of the question: <br>
+?- big(X), dark(X) <br>
+Compare and answer which does more work before the answer is found? <br>
+?- dark(X), big(X) <br>
+
+<font color="blue"> 
+  ?- dark(X), big(X) does more work <br>
+  It is because that ?- big(X), dark(X) directly found the bear instead of firstly found cat then bear.
+</font>
+</div>
+
+<div class="nb-cell html" name="htm41">
+<h1> 2.5 Order of clauses and goals </h1>
+</div>
+
+<div class="nb-cell program" name="p9">
+% Potential indefinite looping
+% Four versions of the ancestor program
+% Same declarative meaning
+% Different procedural meaning
+
+% The original version
+anc1(X, Z) :-
+    parent(X, Z).
+anc1(X, Z) :-
+    parent(X, Y),
+    anc1(Y, Z).
+
+% Variation 1: swap clauses of the original version
+anc2(X, Z) :-
+    parent(X, Y),
+    anc2(Y, Z).
+anc2(X, Z) :-
+    parent(X, Z).
+
+% Variation 2: swap goals in second clause of the original version
+anc3(X, Z) :-
+    parent(X, Z).
+anc3(X, Z) :-
+    anc3(X, Y), 
+    parent(Y, Z).
+
+% Variation 3: swap goals and clauses of the original version
+anc4(X, Z) :-
+    anc4(X, Y),
+    parent(Y, Z).
+anc4(X, Z) :-	% May not reach this important base line.
+    parent(X, Z). % Always simplest idea first!!
+
+% anc1 always simplest first, not only between clauses but also inside clauses
+% anc4 always complicated first.
+</div>
+
+<div class="nb-cell query" name="q42">
+anc1(tom, pat).
+</div>
+
+<div class="nb-cell query" name="q43">
+anc2(tom, pat).
+</div>
+
+<div class="nb-cell query" name="q44">
+anc3(tom, pat).
+</div>
+
+<div class="nb-cell query" name="q45">
+anc4(tom, pat).
+</div>
+
+<div class="nb-cell query" name="q46">
+anc3(liz, jim).
+</div>
+
+<div class="nb-cell html" name="htm42">
+<h1> 2.6 The relation between Prolog and logic </h1>
+</div>
+
+<div class="nb-cell html" name="htm43">
+Describing some relation between Prolog and logic.
+</div>
+
+<div class="nb-cell html" name="htm44">
+<b> Exercise </b> <br>
+2.11 What happens if we ask Prolog: <br>
+?- X = f(X). <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p10">
+f(X) :- X=1.
+</div>
+
+<div class="nb-cell query" name="q47">
+f(X).
+</div>
+
+<div class="nb-cell query" name="q48">
+X = f(X).
+</div>
+
+<div class="nb-cell html" name="htm45">
+<h1> Chapter 2: Summary </h1>
+</div>
+
+<div class="nb-cell html" name="htm46">
+1. Data Type <br>
+(1) Simpel objects: atoms, vriables and numbers. <br>
+(2) Structured objects: structures - functors: name + arity <br>
+2. The lexical scope of variables is one cluase. <br>
+3. Structures can be naturally pictured as trees. Prolog can be viewed as a language for processing trees. <br>
+4. A comma - conjunction; A semicolon - disjunction. <br>
+</div>
+
+<div class="nb-cell html" name="htm47">
+<h1> 3.1 Representation of lists </h1>
+</div>
+
+<div class="nb-cell html" name="htm48">
+Combined into a structure by the functor '.': .(Head, Tail) <br>
+[a,b,c] = [a|[b,c]] = [a,b|[c]] = [a,b,c|[]]
+</div>
+
+<div class="nb-cell html" name="htm49">
+<h1> 3.2 Some operations on lists  </h1>
+</div>
+
+<div class="nb-cell html" name="htm51">
+<h2> 3.2.1 Member </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p11">
+/*Membership
+member(X, L) is true if X occurs in L.
+1. X is a head of L
+2. X is a member of tail of L */
+% base line
+member(X, [X|_]). % fail for member(X, [a,b,c]).
+member(X, [_|L]) :-
+    member(X, L).
+</div>
+
+<div class="nb-cell query" name="q49">
+member(a, [b,c,a]).
+</div>
+
+<div class="nb-cell query" name="q50">
+member(a, [a,b,c,a]).
+</div>
+
+<div class="nb-cell query" name="q51">
+trace, member(X, [a,b,c]).
+</div>
+
+<div class="nb-cell query" name="q52">
+L = [_,_,_], member(a,L), member(b,L), member(c,L).
+</div>
+
+<div class="nb-cell query" name="q53">
+% En-Es Dictionary
+Dict = [p(one,uno), p(two,dos), p(three,tres)], member(p(two,Es), Dict), member(p(En,tres), Dict).
+</div>
+
+<div class="nb-cell html" name="htm50">
+Time complexity - Linear
+</div>
+
+<div class="nb-cell html" name="htm52">
+<h2> 3.2.2 Concatenation </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p12">
+/*
+ * Concatenation
+ * 
+ */
+% Base line
+conc([], L2, L2).
+% Recursive line
+conc([E1|L1], L2, [E1|L3]) :-
+    conc(L1, L2, L3).
+
+/*
+ * Simpler Member
+ */
+member1(X, L) :-
+    conc(_, [X|_], L).
+</div>
+
+<div class="nb-cell query" name="q54">
+conc([a,b,c], [d,e,f], L).
+</div>
+
+<div class="nb-cell query" name="q55">
+conc(L1, [e,f], [a,b,c,d,e,f]).
+</div>
+
+<div class="nb-cell query" name="q56">
+conc([_,_,C], [D,_,_], [a,b,c,d,e,f]).
+</div>
+
+<div class="nb-cell query" name="q57">
+Year = [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec],
+conc(Before, [may|After], Year).
+</div>
+
+<div class="nb-cell query" name="q58">
+trace, member1(b, [a,b,c]).
+</div>
+
+<div class="nb-cell html" name="htm53">
+<b> Exercise </b> <br>
+3.1 (a) Write a goal, using conc, to delete the last three elements from a list L producing another list L1. Hint: L is the concatenation of L1 and a three-element list. <br>
+(b) Write a goal to delete the first three elements and the last three elements from a list L producing list L2.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p13">
+% (a) question
+delList3(L, L1) :- conc(L1, [_,_,_], L).
+% (b) question
+delList33(L, L2) :-
+    delList3(L, L1),
+    conc([_,_,_], L2, L1).
+</div>
+
+<div class="nb-cell query" name="q59">
+delList3([a,b,c,d,e,f,g], L1).
+</div>
+
+<div class="nb-cell query" name="q60">
+delList33([a,b,c,d,e,f,g], L2).
+</div>
+
+<div class="nb-cell html" name="htm54">
+<b> Exercise </b> <br>
+3.2 Define the relation <br>
+last(Item, List) <br>
+so that Item is the last element of a list List. Write two versions: <br> 
+(a) using conc relation <br>
+(b) without conc
+</div>
+
+<div class="nb-cell program" data-background="true" name="p14">
+% (a) using conc relation
+lastWith(Item, List) :- 
+    conc(_, [Item|[]], List).
+
+% (b) without conc
+% base line
+lastWithout(Item, [Item|[]]).
+% recursive line
+lastWithout(Item, [_|List]) :-
+    lastWithout(Item, List).
+
+% Cannot use lastWithout(_, [_|List])
+% Item = _, also can be considered as instantiation
+</div>
+
+<div class="nb-cell query" name="q61">
+lastWith(Item, [a,b,c,d,e]).
+</div>
+
+<div class="nb-cell query" name="q62">
+lastWithout(Item, [a,b,c,d,e]).
+</div>
+
+<div class="nb-cell html" name="htm55">
+<h2> 3.2.3 Adding an item </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p15">
+% adding an item
+% add(X, L, L1)
+add(X, L, [X|L]).
+</div>
+
+<div class="nb-cell query" name="q63">
+add([a,b,c], [d,e,f], L).
+</div>
+
+<div class="nb-cell html" name="htm56">
+<h2> 3.2.4 Deleting an item </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p16">
+% deleting an item from a list
+% del(X,L,L1)
+% base line: simplest answer
+del(X, [X|L1], L1).
+% recursive line
+del(X, [H|L], [H|L1]) :- % each '_' different, even in the same clause
+    del(X, L, L1).		 % use H = H, not '_' and '_'
+
+% insert
+insert(X, List, ExList) :-
+    del(X, ExList, List).
+
+% member2
+% some X is a member of List if X can be delete from List 
+% (declarative meaning)
+member2(X, List) :-
+    del(X, List, _).
+</div>
+
+<div class="nb-cell query" name="q64">
+del(d, [a,b,c,d,e,f], L1).
+</div>
+
+<div class="nb-cell query" name="q65">
+% insert an 'a' via del/3
+del(a, L, [1,2,3]).
+</div>
+
+<div class="nb-cell query" name="q66">
+insert(a, [1,2,3], L).
+</div>
+
+<div class="nb-cell query" name="q67">
+member2(a, [1,2,a,3]).
+</div>
+
+<div class="nb-cell html" name="htm57">
+<h2> 3.2.5 Sublist </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p17">
+% sublist(S, L) is true if S is a sublist of L
+% Sean's answer
+% base line: simplest
+sublist(S, L) :-
+    conc(S, _, L).
+% recursive line
+sublist(S, [_|Tail]) :-
+    sublist(S, Tail).
+
+% Official Book
+% Similar to member1/2
+sublist2(S, L) :-
+    conc(_, L2, L),
+    conc(S, _, L2).
+</div>
+
+<div class="nb-cell query" name="q68">
+sublist([1,2], [a,a,1,3,2,3,4]).
+</div>
+
+<div class="nb-cell query" name="q69">
+sublist([1,2], [a,a,1,2,3,4]).
+</div>
+
+<div class="nb-cell query" name="q70">
+sublist2([1,2], [a,a,1,3,2,3,4]).
+</div>
+
+<div class="nb-cell query" name="q71">
+sublist2([1,2], [a,a,1,2,3,4]).
+</div>
+
+<div class="nb-cell query" name="q72">
+sublist(S, [a,b,c]).
+% In this case, we use declarative meaning
+% We do not know the procedural meaning actually
+% Just reverse :D
+</div>
+
+<div class="nb-cell html" name="htm58">
+<h2> 3.2.6 Permutations </h2>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p18">
+% Permutations
+% permutation([a,b,c], P)
+% base line
+permutation([], []).
+% recursive line
+permutation([H|L], P) :-
+    permutation(L, L1),
+    insert(H, L1, P).
+
+% base line
+permutation2([], []).
+% recursive line
+permutation2(L, [H|P]) :-
+    del(H, L, L1),
+    permutation2(L1, P).
+</div>
+
+<div class="nb-cell query" name="q73">
+permutation([a,b,c], P).
+</div>
+
+<div class="nb-cell query" name="q74">
+permutation2([a,b,c], P).
+</div>
+
+<div class="nb-cell query" name="q75">
+permutation(L, [a,b,c]).
+</div>
+
+<div class="nb-cell query" name="q76">
+permutation2(L, [a,b,c]).
+</div>
+
+<div class="nb-cell html" name="htm59">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p19">
+/*
+ * 3.3
+ * Define two predicates
+ * evenlength(List) and oddlength(List)
+ */
+evenlength([]).
+evenlength([_,_|List]) :-
+    evenlength(List), !.
+
+oddlength([_]).
+oddlength([_,_|List]) :-
+    oddlength(List), !.
+
+oddlength2(List) :- not(evenlength(List)).
+
+/*
+ * 3.4
+ * Define the relation
+ * reverse(List, ReverseList)
+ */
+reverse([], []).
+reverse([H|T], L) :-
+    conc(L1, [H], L),
+    reverse(T, L1), !.
+
+/*
+ * 3.5
+ * Define the relation
+ * palindrome(List)
+ * read same in the forward and the backward direction
+ */
+equallist([],[]).
+equallist([X|L1],[X|L2]) :-
+    equallist(L1,L2).
+
+% OM, mirror
+% &lt;Construct a new list&gt; to operate
+palindrome(List) :-
+    reverse(List, LR),
+    equallist(List,LR).
+
+palindrome2(List) :-
+    conc(F, BL, List),
+    conc([_], B, BL),
+    reverse(B, BF),
+    F = BF, !.
+
+/*
+ * 3.6
+ * Define the relation
+ * shift(List1, List2)
+ */
+shift([X|L], L1) :-
+    conc(L, [X], L1).
+
+/*
+ * 3.7 
+ * Define the relation
+ * tranlaste(List1, List2)
+ */
+% facts
+means(0, zero).
+means(1, one).
+means(2, two).
+means(3, three).
+means(4, four).
+means(5, five).
+means(6, six).
+means(7, seven).
+means(8, eight).
+means(9, nine).
+% base line
+translate([], []).
+% recursive line
+translate([H1|L1], [H2|L2]) :-
+    means(H1, H2),
+    translate(L1, L2).
+
+% Did not finish
+/*
+ * 3.8 
+ * Define the relation
+ * subset(Set, Subset)
+ */
+% base line
+subset([], []).
+subset(Set, Subset) :-
+    del(_ ,[_|Subset] ,Set),
+    subset(Subset, _).
+
+/*
+ * 3.9
+ * Define the relation
+ * dividelist(List, LIst1, List2)
+ */
+% base line
+dividelist([], [], []).
+dividelist([H|L], [H|L1], L2) :-
+    oddlength(L),
+    dividelist(L, L1, L2).
+dividelist([H|L], L1, [H|L2]) :-
+    evenlength(L),
+    dividelist(L, L1, L2).
+
+/*
+ * 3.10
+ * Define the predicate
+ * equal_length(L1, L2)
+ */
+equal_length([], []).
+equal_length([_|L1], [_|L2]) :-
+    equal_length(L1, L2).
+
+% Carefully!
+/*
+ * 3.11
+ * Define the relation
+ * flatten(List, FlatList)
+ */
+% base line
+flatten([], []) :- !.
+% recursive line
+flatten([H|T], FlatList) :- % Double check, go into check
+    !,
+    flatten(H, H1),
+    flatten(T, T1),
+    conc(H1, T1, FlatList).
+flatten(L, [L]).
+</div>
+
+<div class="nb-cell query" name="q77">
+evenlength([a,b,c,d,e]).
+</div>
+
+<div class="nb-cell query" name="q78">
+evenlength([a,b,c,d]).
+</div>
+
+<div class="nb-cell query" name="q79">
+oddlength([a,b,c,d,e]).
+</div>
+
+<div class="nb-cell query" name="q80">
+oddlength([a,b,c,d]).
+</div>
+
+<div class="nb-cell query" name="q82">
+oddlength2([a,b,c]).
+</div>
+
+<div class="nb-cell query" name="q83">
+oddlength2([a,b,c,d]).
+</div>
+
+<div class="nb-cell query" name="q81">
+reverse([a,b,c,d], L).
+</div>
+
+<div class="nb-cell query" name="q84">
+palindrome([m,a,d,a,m]).
+</div>
+
+<div class="nb-cell query" name="q85">
+palindrome([m,a,a,m]).
+</div>
+
+<div class="nb-cell query" name="q86">
+palindrome([m,a,a,c,m]).
+</div>
+
+<div class="nb-cell query" name="q87">
+palindrome2([m,a,a,c,m]).
+</div>
+
+<div class="nb-cell query" name="q88">
+palindrome2([m,a,a,a,m]).
+</div>
+
+<div class="nb-cell query" name="q89">
+shift([1,2,3,4,5], L1), shift(L1, L2).
+</div>
+
+<div class="nb-cell query" name="q90">
+translate([1,2,A], [B,C,nine]).
+</div>
+
+<div class="nb-cell query" name="q91">
+subset([a,b,c], S).
+</div>
+
+<div class="nb-cell query" name="q92">
+dividelist([a,b,c,d,e], L1, L2).
+</div>
+
+<div class="nb-cell query" name="q93">
+equal_length([a,b,c], [e,d,v]).
+</div>
+
+<div class="nb-cell query" name="q94">
+equal_length([a,b,c], [e,d]).
+</div>
+
+<div class="nb-cell query" name="q95">
+flatten([a,b,[c,d],e], R).
+</div>
+
+<div class="nb-cell html" name="htm60">
+<h1> 3.3 Operation notation </h1>
+</div>
+
+<div class="nb-cell html" name="htm61">
+1. infix operators = between 2 arguments <br>
+2. <font color="blue">Lower precedence = bind stronger </font> <br>
+3. <font color="red">The highest precedence = the principal functor of the term </font> <br>
+4. :- op(600, xfx, has) <br>
+(a) 600 = precedence (from 1-1200) <br>
+(b) xfx = infix operator <br>
+(c) has = name <br>
+5. operator normally constructs but not to invoke an action <br>
+6. Three groups of operators types <br>
+(1) infix operators: xfx, xfy, yfx <br>
+(2) prefix operators: fx, fy <br>
+(3) postfix operators: xf, yf <br>
+7. Precedence of argument <br>
+(a) '()' or unstructured = 0 <br>
+(b) structured = equal to the precedence of its principal functor <br>
+8. x vs. y <br>
+(1) x = the precedence must be lower than operator <br>
+(2) y = the precedence can be lower than operator or equal <br>
+P.S.: yfx = yf then (yf)x, xfy = fy then x(fy) <br>
+</div>
+
+<div class="nb-cell html" name="htm62">
+<b> Exercise </b> <br>
+3.12 Assume the operator definitions <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p20">
+:- op(300, xfx, plays).
+:- op(200, xfy, and).
+</div>
+
+<div class="nb-cell query" name="q96">
+Term1 = jimmy plays football and squash,
+Term2 = susan plays tennis and basketball and volleyball.
+</div>
+
+<div class="nb-cell html" name="htm63">
+<b> Exercise </b> <br>
+3.13 Suggest an appropriate definitino of operators ('was', 'or', 'the') to tbe able to write clauses like: <br>
+diana was the secretary of the department <br>
+and then ask Prolog <br>
+Who was the secretary of the department. <br>
+diana was What. <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p21">
+:- op(500, xfx, was).
+:- op(400, xfx, of).
+:- op(300, fx, the).
+diana was the secretary of the department.
+</div>
+
+<div class="nb-cell query" name="q98">
+Who was the secretary of the department.
+</div>
+
+<div class="nb-cell query" name="q99">
+diana was What.
+</div>
+
+<div class="nb-cell query" name="q100">
+diana was the secretary of What.
+</div>
+
+<div class="nb-cell html" name="htm64">
+<b> Exercise </b> <br>
+Considert he program: <br>
+How will this program answer the following question if "+" is an infix operator of type yfx (as usual):
+</div>
+
+<div class="nb-cell program" data-background="true" name="p22">
+t(0+1, 1+0).
+t(X+0+1, X+1+0).
+t(X+1+1, Z) :-
+    t(X+1, X1), 
+    t(X1+1, Z).
+</div>
+
+<div class="nb-cell query" name="q97">
+t(0+1, A).
+</div>
+
+<div class="nb-cell query" name="q101">
+t(0+1+1, B)
+</div>
+
+<div class="nb-cell query" name="q102">
+t(1+0+1+1+1, C)
+</div>
+
+<div class="nb-cell query" name="q103">
+t(D, 1+1+1+0).
+</div>
+
+<div class="nb-cell html" name="htm65">
+<b> Exercise </b> <br>
+3.15 In the previous section, relations involving lists were writen as:
+</div>
+
+<div class="nb-cell html" name="htm66">
+<h1> 3.4 Arithmetic </h1>
+</div>
+
+<div class="nb-cell html" name="htm67">
+1. is <br>
+2. / - real divide, // - integer division, mod - denotes <br>
+3. '=' matching, '=:=' evaluation <br>
+</div>
+
+<div class="nb-cell query" name="q104">
+1 + A = B + 2.
+</div>
+
+<div class="nb-cell query" name="q105">
+1 + A =:= B + 2.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p23">
+/*gcd(X, X, D) :-
+    D is X.*/
+% An algorithmdd
+gcd(X, X, X).
+gcd(X, Y, D) :-
+    X &lt; Y,
+    Y1 is Y - X,
+    gcd(X, Y1, D).
+gcd(X, Y, D) :-
+    X &gt; Y,
+    gcd(Y, X, D).
+
+/*
+ * Count number of elements in a list
+ * lengthList(List, N).
+ */
+lengthList([], 0).
+lengthList([_|T], N) :-
+    lengthList(T, N1),
+    N is N1 + 1. % N1 has to be instantiation
+
+% another way
+lengthList1([], 0).
+lengthList1([_|T], N+1) :-
+    lengthList1(T, N).
+</div>
+
+<div class="nb-cell query" name="q106">
+trace, lengthList([a,b,[b,b],c], N).
+</div>
+
+<div class="nb-cell query" name="q107">
+% separate the codes
+% 1. construct N
+% 2. evaluate N
+% predefined operators: +, -, *, /, //, mod etc.
+% force evaluation: is, &lt;. =&lt; etc.
+lengthList1([a,b,c], N), Length is N.
+</div>
+
+<div class="nb-cell html" name="htm68">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p24">
+/*
+ * 3.16 Define the relation
+ * max(X, Y, Max)
+ */
+max(X, Y, Y) :-
+    X =&lt; Y, !.
+max(X, Y, X) :-
+    X &gt; Y.
+
+/*
+ * 3.17 Define the predicate
+ * maxlist(List, Max)
+ * Max = the greatest number in list
+ */
+maxlist([H|[]], H).
+maxlist([H|T], Max) :-
+    maxlist(T, Max1), % first go through
+    max(H, Max1, Max). % then compare/ operation
+
+/*
+ * 3.18 Define the predicate
+ * sumlist(List, Sum)
+ */
+% helper
+sumlist_helper([], 0).
+sumlist_helper([_|T], S+1) :-
+    sumlist_helper(T, S).
+% main
+sumlist(List, Sum) :-
+    sumlist_helper(List, S),
+    Sum is S.
+
+/*
+ * 3.19 Define the predicate
+ * ordered(List)
+ * true if ordered([1,2,3,4,5,7,8])
+ */
+ordered_helper([]).
+ordered_helper([H|T]) :-
+    maxlist([H|T], H),
+    ordered_helper(T).
+ordered(List) :-
+    reverse(List, NewList),
+    ordered_helper(NewList), !.
+
+/*
+ * 3.20 Define the predicate
+ * subsum(Set, Sum, SubSet)
+ * Set is a list of numbers
+ * SubSet is a subset of these numbers
+ * the sum of the numbers in SubSet is Sum
+ */
+
+
+/*
+ * 3.21 Define the procedure
+ * between(N1, N2, X)
+ * all X between N1 and N2: N1 &lt; X &lt; N2
+ */
+equal(X, X).
+% see member(X, [a,b,c,d])
+
+
+/*
+ * 3.22 Define the operators
+ * 
+ */
+</div>
+
+<div class="nb-cell query" name="q108">
+max(1,2,D), max(3,1,E).
+</div>
+
+<div class="nb-cell query" name="q109">
+maxlist([1,2,3], Max).
+</div>
+
+<div class="nb-cell query" name="q110">
+sumlist([a,b,c,[a,b,c]], Sum).
+</div>
+
+<div class="nb-cell query" name="q111">
+ordered([1,3,5]).
+</div>
+
+<div class="nb-cell query" name="q112">
+ordered([1,5,3]).
+</div>
+
+<div class="nb-cell query" name="q113">
+between1(1,5,X).
+</div>
+
+<div class="nb-cell html" name="htm69">
+<h1> Chapter 3: Summary </h1>
+</div>
+
+<div class="nb-cell html" name="htm70">
+1. operators are merely a syntactic device providing an alternative syntax for terms. <br>
+2. Arithmetic <font color="blue">built-in procedures.</font> <br>
+</div>
+
+<div class="nb-cell html" name="htm71">
+<h1> Chapter 4: Summary </h1>
+</div>
+
+<div class="nb-cell html" name="htm72">
+Often, the key step toward a solution is to generalize the problem. Paradoxically, by considering a more general problem the solution may become easier to formualte.
+</div>
+
+<div class="nb-cell html" name="htm73">
+<h1> 5.1 Preventing backtracking </h1>
+</div>
+
+<div class="nb-cell html" name="htm74">
+1. uncontrolled backtracking may cause inefficiency in a program. <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p25">
+% Show a useless backtracking
+% If goal list is not satisfiable, 
+% Prolog, tries through backtracking, two useless alternatives.
+f(X, normal) :-
+    X &lt; 3.
+f(X, alert1) :-
+    3 =&lt; X, X &lt; 6.
+f(X, alert2) :-
+    6 =&lt; X.
+
+% 5.1.1 &amp; 5.1.2
+% Sean's making
+% Also for experiment1 &amp; experiment 2
+% One successful, others must be failed,
+% First two failed, last one must be successful.
+% Procedural meaning = sequency
+% Declarative meaning = result 
+fs(X, normal) :-
+    X &lt; 3, !.
+fs(X, alert1) :-
+    X &lt; 6, !.
+fs(_, alert2).
+
+% This is incorrect!!!
+f2(X, normal) :-
+    X &lt; 3.
+f2(X, alert1) :-
+    X &lt; 6.
+f2(_, alert2).
+</div>
+
+<div class="nb-cell query" name="q115">
+trace, f(4, Alert).
+</div>
+
+<div class="nb-cell query" name="q114">
+trace, fs(4, Alert).
+</div>
+
+<div class="nb-cell query" name="q116">
+fs(2,Y), Y=alert1.
+</div>
+
+<div class="nb-cell query" name="q117">
+% This is incorrect!!!
+f2(2,Y), Y = alert2.
+</div>
+
+<div class="nb-cell html" name="htm75">
+<h1> 5.2 Examples of using cut </h1>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p26">
+% 5.2.1 Computing maximum
+% ! = if/ else if
+% no ! = (otherwise) else
+% if X &gt;= Y then Max = X,
+% otherwise Max = Y.
+max1(X, Y, X) :-
+    X &gt; Y, !.
+max1(_, Y, Y).
+
+% instantiation problem
+max2(X, Y, Max) :-
+    X &gt;= Y, !, Max = X
+    ;
+    Max = Y.
+</div>
+
+<div class="nb-cell query" name="q118">
+max1(1,2,Max1), max1(3,1,Max2).
+</div>
+
+<div class="nb-cell query" name="q119">
+max(3,1,3).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p27">
+% 5.2.2 Single-solution membership
+% find only the first occurence.
+member3(X, [X|_]) :- !.
+member3(X, [_|L]) :-
+    member3(X, L).
+
+% find many times.
+member33(X, [X|_]).
+member33(X,[_|L]) :-
+    member33(X, L).
+</div>
+
+<div class="nb-cell query" name="q120">
+member3(3, [1,2,3,4,3,3]).
+</div>
+
+<div class="nb-cell query" name="q122">
+member3(X, [a,b,c]).
+</div>
+
+<div class="nb-cell query" name="q121">
+member33(3, [1,2,3,4,3,3]).
+</div>
+
+<div class="nb-cell query" name="q123">
+member33(X, [a,b,c]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p28">
+% E-System
+extract([], _, _, _, [], _).
+extract([_|T], N1, N2, C ,[C|R], I) :-
+    I &gt;= N1,
+    I =&lt; N2,
+    I1 is I + 1,
+    extract(T, N1, N2, C, R, I1), !.
+extract([H|T], N1, N2, C, [H|R], I) :-
+    I1 is I + 1,
+    extract(T, N1, N2, C, R, I1).
+
+% extract_help(L,S,E,C,R) :-
+%    extract(L,S,E,C,R,1).
+</div>
+
+<div class="nb-cell query" name="q124">
+extract([1,2,3,4,5], 2, 4, c, R, 1).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p29">
+% 5.2.3 Adding an element to a list without duplication
+% add a X that is not in the list L
+% Sean's method
+% base line
+add1([], [], []) :- !.
+add1(X, [], [X]) :- !.
+% recursive line
+add1(X, [X|T], [X|T1]) :-
+    add1([], T, T1), !.
+add1(X, [H|T], [H|T1]) :-
+    add1(X, T, T1), !.
+
+% Sean's method 2
+% Remember your helper!
+add11(X, L, [X|L]) :-
+    not(member(X, L)), !.
+add11(_, L, L).
+
+% Official method
+add111(X, L, L) :- member(X, L), !.
+add111(X, L, [X|L]).
+
+% If we omit the cut
+% The program will not only do the add11(X, L, [X|L])
+% but also do the add11(_, L, L).
+% Two result we will get, no matter what conditions we give
+% So the cut is necessary here to specify the intended relation,
+% and not only to improve efficiency.
+% Not only procedural meaning, but also declarative meaning.
+</div>
+
+<div class="nb-cell query" name="q125">
+add1(a, [b,c,d,e], L1).
+</div>
+
+<div class="nb-cell query" name="q126">
+add1(a, [b,c,a,d], L1).
+</div>
+
+<div class="nb-cell query" name="q127">
+add1(a, [b,c,d,a,a,a,a,c], L1).
+</div>
+
+<div class="nb-cell query" name="q128">
+add11(a, [b,c,d,a,d], L1).
+</div>
+
+<div class="nb-cell query" name="q129">
+add11(a, [b,c,d,d], L1).
+</div>
+
+<div class="nb-cell query" name="q130">
+add11(a, [b,c], L).
+</div>
+
+<div class="nb-cell query" name="q131">
+trace, add11(X, [b,c], L).
+</div>
+
+<div class="nb-cell query" name="q132">
+add111(a, [b,c,X], L).
+</div>
+
+<div class="nb-cell html" name="htm76">
+<b> Procedural meaning will change declarative meaning. </b> <br>
+Be aware: Similar to the foregoing example with max, add(X, L1, L2) is intended to be called with L2 uninstantiated. Otherwise, the result may be unexpected.
+</div>
+
+<div class="nb-cell query" name="q133">
+add11(a, [a], [a,a]).
+</div>
+
+<div class="nb-cell query" name="q134">
+add111(a, [a], [a,a]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p30">
+% 5.2.4 Classification into categories
+% database
+beat(tom, jim).
+beat(ann, tom).
+beat(pat, jim).
+
+% classification
+% winner: won all games
+% fighter: won some games, lost some games
+% sportsman: lost all games
+% meaning that 
+/*
+ * If(!) X beat somebody and X was beaten by somebody
+ * 	then X is a fighter,
+ * otherwise(!) if X beat somebody
+ * 	then X is a winner,
+ * otherwise if X got beaten by somebody
+ * 	then X is a sportsman.
+ */
+% Problem: Cannot work good on the uninstantiated situation!
+class(Player, fighter) :-
+    beat(Player, _),
+    beat(_, Player), 
+    !.
+class(Player, winner) :-
+    beat(Player, _),
+    !.
+class(_, sportsman).
+</div>
+
+<div class="nb-cell query" name="q135">
+class(tom, Tom), class(jim, Jim), class(ann, Ann), class(pat, Pat).
+</div>
+
+<div class="nb-cell query" name="q136">
+% Problem: Cannot work good on the uninstantiated situation!
+class(tom, sportsman).
+</div>
+
+<div class="nb-cell query" name="q137">
+% Problem: Cannot work good on the uninstantiated situation!
+class(tom, fighter).
+</div>
+
+<div class="nb-cell html" name="htm77">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p31">
+% 5.1 Let a program be:
+% Write all Prolog's answers to the following questions:
+p(1).
+p(2) :-
+    !.
+p(3).
+</div>
+
+<div class="nb-cell query" name="q138">
+p(X).
+</div>
+
+<div class="nb-cell query" name="q139">
+p(X), p(Y).
+</div>
+
+<div class="nb-cell query" name="q140">
+p(X), !, p(Y).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p32">
+% 5.2 The following relation classfies numbers 
+% into three positive, zero and negative:
+% Define this procedure in a more efficient way using cuts.
+classNumber(Number, positive) :-
+    Number &gt; 0.
+classNumber(0, zero).
+classNumber(Number, negative) :-
+    Number &lt; 0.
+
+% Improvement for the procedure
+classNumber1(Number, positive) :-
+    Number &gt; 0, !.
+classNumber1(0, zero) :-
+    !.
+classNumber1(_, negative).
+</div>
+
+<div class="nb-cell query" name="q141">
+trace, classNumber(2, Type).
+</div>
+
+<div class="nb-cell query" name="q142">
+trace, classNumber1(2, Type).
+</div>
+
+<div class="nb-cell query" name="q143">
+% Problem, also for the instantiated situation
+classNumber1(1, negative).
+</div>
+
+<div class="nb-cell query" name="q144">
+% Problem, also for the instantiated situation
+classNumber1(1, Type).
+</div>
+
+<div class="nb-cell query" name="q145">
+% Problem, also for the instantiated situation
+classNumber(1, negative).
+</div>
+
+<div class="nb-cell query" name="q146">
+% Problem, also for the instantiated situation
+classNumber(1, Type).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p33">
+% 5.3 Define the procedure
+% split(Numbers, Positives, Negatives)
+% Separate them to positive and negative one
+
+% with cut
+% base line
+split([], [], []).
+% recursive line
+split([H|T], L1, [H|T2]) :-
+    classNumber(H, negative), % Remember to use exist helper!
+    split(T, L1, T2), !.
+split([H|T], [H|T1], L2) :-
+    split(T, T1, L2).
+
+% without cut
+% base line
+split1([], [], []).
+% recursive line
+split1([H|T], [H|T1], L2) :-
+    not(classNumber(H, negative)), % Remember to use exist helper!
+    split(T, T1, L2).
+split1([H|T], L1, [H|T2]) :-
+    classNumber(H, negative), % Remember to use exist helper!
+    split(T, L1, T2).
+</div>
+
+<div class="nb-cell query" name="q147">
+split([1,2,-3,5,-5,1,0,-2,1], Positive, Negative).
+</div>
+
+<div class="nb-cell query" name="q148">
+split1([1,2,-3,5,-5,1,0,-2,1], Positive, Negative).
+</div>
+
+<div class="nb-cell html" name="htm78">
+<h1> 5.3 Negation as failure </h1>
+</div>
+
+<div class="nb-cell html" name="htm79">
+1. Not true = special goal = <font color="red">fail.</font> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p34">
+% Mary likes animals but snakes
+animal(bear).
+animal(snake).
+
+% IMPORTANT!!!
+% likes(mary, X) :- X = snake, fail, !.
+% To prevent it backtrack, ! should be placed in front of 'fail'
+likes(mary, X) :- X = snake, !, fail.
+likes(mary, X) :- animal(X).
+
+% More compactly
+likes1(mary, X) :-
+    X = snake, !, fail
+    ;   
+    animal(X).
+
+% Using not instead of !
+likes11(mary, X) :-
+    animal(X),
+    not(X = snake).
+</div>
+
+<div class="nb-cell query" name="q149">
+likes(mary, bear).
+</div>
+
+<div class="nb-cell query" name="q150">
+likes(mary, cat).
+</div>
+
+<div class="nb-cell query" name="q151">
+likes(mary, snake).
+</div>
+
+<div class="nb-cell query" name="q152">
+likes1(mary, bear).
+</div>
+
+<div class="nb-cell query" name="q153">
+likes1(mary, cat).
+</div>
+
+<div class="nb-cell query" name="q154">
+likes1(mary, snake).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p35">
+% different(X, Y)
+% which is true if X and Y are different
+% 1. X and Y are not literally the same
+% 2. X and Y do not match
+% 3. the values of arithmetic expressions X and Y are not equal
+
+different(X, X) :- !, fail.
+different(_, _).
+
+% which can be also written as
+different1(X, Y) :- 
+    X = Y, !, fail % fail = unsuccessful/ unsatisfied
+    ;   
+    true. % true = successful/ satisfied
+    
+% not(Goal)
+% If Goal succeeds then not(Goal) fails,
+% 	otherwise not(Goal) succeeds.
+not1(P) :-
+    P, !, fail
+    ;   
+    true.
+
+% now we can modify
+different11(X, Y) :-
+    not(X = Y).
+
+% not(snake(X)) = not snake(X) = \+ snake(X)
+</div>
+
+<div class="nb-cell query" name="q155">
+different(a,b).
+</div>
+
+<div class="nb-cell query" name="q156">
+different(a,a).
+</div>
+
+<div class="nb-cell query" name="q157">
+different1(a,b).
+</div>
+
+<div class="nb-cell query" name="q158">
+different1(a,a).
+</div>
+
+<div class="nb-cell query" name="q159">
+not1(true).
+</div>
+
+<div class="nb-cell query" name="q160">
+not1(fail).
+</div>
+
+<div class="nb-cell query" name="q162">
+not(true).
+</div>
+
+<div class="nb-cell query" name="q161">
+not(fail).
+</div>
+
+<div class="nb-cell query" name="q163">
+different11(a,b).
+</div>
+
+<div class="nb-cell query" name="q164">
+different11(a,a).
+</div>
+
+<div class="nb-cell html" name="htm80">
+<b> negation as fail: </b>not or '\+' <br>
+<b> closed world assumption: </b>
+</div>
+
+<div class="nb-cell query" name="q165">
+likes11(mary, bear).
+</div>
+
+<div class="nb-cell query" name="q166">
+likes11(mary, cat).
+</div>
+
+<div class="nb-cell query" name="q167">
+likes11(mary, snake).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p36">
+% Rewriting three player classification by 'not' notation
+% classification
+% winner: won all games
+% fighter: won some games, lost some games
+% sportsman: lost all games
+% meaning that 
+/*
+ * If(!) X beat somebody and X was beaten by somebody
+ * 	then X is a fighter,
+ * otherwise(!) if X beat somebody
+ * 	then X is a winner,
+ * otherwise if X got beaten by somebody
+ * 	then X is a sportsman.
+ */
+% Problem: Cannot work good on the uninstantiated situation!
+class1(Player, fighter) :-
+    beat(Player, _),
+    beat(_, Player).
+class1(Player, winner) :-
+    beat(Player, _),
+    not(beat(_, Player)).
+class1(Player, sportsman) :-
+    beat(_, Player),
+    not(beat(Player, _)).
+</div>
+
+<div class="nb-cell query" name="q168">
+class1(tom, Tom), class1(jim, Jim), class1(ann, Ann), class1(pat, Pat).
+</div>
+
+<div class="nb-cell query" name="q169">
+class1(tom, sportsman).
+</div>
+
+<div class="nb-cell query" name="q170">
+class1(tom, winner).
+</div>
+
+<div class="nb-cell query" name="q171">
+class1(tom, fighter).
+</div>
+
+<div class="nb-cell html" name="htm81">
+<h1> (If have time to read it) Eight-Queens Problem Optimized by not/'\+' </h1>
+</div>
+
+<div class="nb-cell html" name="htm82">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p37">
+% 5.4 Given two lists, Candidates and RuledOut, 
+% write a sequence of goals (using member and not)
+% that will through backtracking find all the items in Candidates 
+% that are not in RuledOut
+
+% base line
+findCandi([], _, []).
+% recursive line
+findCandi([H|T], RO, [H|T1]) :-
+    not(member(H, RO)),
+    findCandi(T, RO, T1), !.
+findCandi([_|T], RO, L) :-
+    findCandi(T, RO, L).
+</div>
+
+<div class="nb-cell query" name="q172">
+findCandi([a,b,c,d,e], [], L).
+</div>
+
+<div class="nb-cell query" name="q173">
+findCandi([a,b,c,d,e], [c,e], L).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p38">
+% 5.5 Define the st subtraction relation
+% set_difference(Set1, Set2, SetDifference)
+set_difference_helper([], _, []).
+set_difference_helper([H|Set1], Set2, [H|T]) :-
+    not(member(H, Set2)), 
+    set_difference_helper(Set1, Set2, T), !.
+set_difference_helper([_|Set1], Set2, T) :-
+    set_difference_helper(Set1, Set2, T).
+
+set_difference(Set1, Set2, SetDifference) :-
+    set_difference_helper(Set1, Set2, Diff1),
+    set_difference_helper(Set2, Set1, Diff2),
+    conc(Diff1, Diff2, SetDifference).
+</div>
+
+<div class="nb-cell query" name="q174">
+set_difference([a,b,c,d], [b,d,e,f], Diff).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p39">
+% 5.6 Define the predicate
+% unifiable(List1, Term, List2)
+% IMPORTANT!!!
+% not(Term1 = Term2), succeeds, Term1 and Term2 will fail
+
+unifiable1([], _, []).
+unifiable1([H|T], Term, L) :- % Remember this model/ condition
+    not(H = Term),
+    % In this case, this ! only cut this layer/ level
+    % When goes to next unifiable1, this ! will not affect that level
+    unifiable1(T, Term, L), !.	% Remember first put '!' in easier place.
+unifiable1([H|T], Term, [H|L]) :- % Remember this model/ condition
+    unifiable1(T, Term, L).
+</div>
+
+<div class="nb-cell query" name="q175">
+unifiable1([X, b, t(Y)], t(a), List).
+</div>
+
+<div class="nb-cell html" name="htm83">
+<h1> 5.4 Closed world assumption, and problems with cut and negation </h1>
+</div>
+
+<div class="nb-cell html" name="htm84">
+1. cut <br>
+(a) green cut - do not change declarative meaning when change orders <br>
+(b) red cut - do change declarative meaning when change orders <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p40">
+% CWA: Closed World Assumption
+round(ball).
+% round(earth).
+</div>
+
+<div class="nb-cell query" name="q176">
+% CWA: Closed World Assumption
+% (a) no = no
+% (b) no = I do not know
+round(ball).
+</div>
+
+<div class="nb-cell query" name="q177">
+round(earth).
+</div>
+
+<div class="nb-cell query" name="q178">
+not(round(earth)).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p41">
+% Quantification of variables under not
+% not goal is safe when the variable in goal is INSTANTIATED!!
+% Better: the variables under a negated goal are INSTANTIATED!!
+good_standard(jeanluis).
+good_standard(francesco).
+expensive(jeanluis).
+resonable(Restaurant) :-
+    not(expensive(Restaurant)).
+</div>
+
+<div class="nb-cell query" name="q179">
+good_standard(X), resonable(X).
+</div>
+
+<div class="nb-cell query" name="q180">
+% false, because there is no expensive(X) related to francesco
+% Different order of instantiation
+resonable(X), good_standard(X).
+</div>
+
+<div class="nb-cell query" name="q181">
+% no expensive(X) related to francesco
+not(expensive(X)).
+</div>
+
+<div class="nb-cell html" name="htm85">
+<h1> Summary: Chapter 5 </h1>
+</div>
+
+<div class="nb-cell html" name="htm86">
+1. '!' cut prevent backtracking <font color="red">at this level</font>, but when go to next level, it does not prevent it. <br>
+2. '!' like if, if Condition then Conlusion1 otherwise Conclusion2 <br>
+3. 'not' Goal can be used to replace '!' and 'fail'<br>
+4. true = true, fail = fail in Prolog <br>
+5. CWA: Closed World Assumption <br>
+6. Avoid 'not' problem, please make variables INSTANTIATED <br>
+7. Avoid 'is'? problem, please make variables INSTANTIATED. <font color="red">NOT REMEMBER </font><br>
+8. In many versions of Prolog, 'not' is written as '\+'
+</div>
+
+<div class="nb-cell html" name="htm87">
+<h1> 6.1 Testing the type of terms </h1>
+</div>
+
+<div class="nb-cell query" name="q182">
+% 6.1.1 var, nonvar
+% check variable, integer and atom
+% var: only an uninstantiated variable
+% nonvar: not a variable or an already instantiated variable
+% atom: only atom
+% integer: only integer
+% float: only real number
+% number: integer or real number
+% atomic: number or atom
+% compound: only compound/ structure
+</div>
+
+<div class="nb-cell query" name="q183">
+var(Z), Z=2.
+</div>
+
+<div class="nb-cell query" name="q184">
+Z=2, var(Z).
+</div>
+
+<div class="nb-cell query" name="q185">
+integer(Z), Z=2.
+</div>
+
+<div class="nb-cell query" name="q186">
+Z=2, integer(Z), nonvar(Z).
+</div>
+
+<div class="nb-cell query" name="q187">
+atom(3.14).
+</div>
+
+<div class="nb-cell query" name="q188">
+atom(==&gt;).
+</div>
+
+<div class="nb-cell query" name="q189">
+atomic(3.14).
+</div>
+
+<div class="nb-cell query" name="q190">
+atom(p(1)).
+</div>
+
+<div class="nb-cell query" name="q191">
+compound(p(1)).
+</div>
+
+<div class="nb-cell query" name="q192">
+compound(2+X).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p42">
+% How to make a compound(X)
+compound1(Object) :-
+    Object =.. List,
+    length(List, N),
+    N &gt;= 2.
+</div>
+
+<div class="nb-cell query" name="q194">
+compound1(1 + X).
+</div>
+
+<div class="nb-cell query" name="q195">
+compound1(3.14).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p43">
+% Count how many times a given atom occur in a given list of objects
+% count(A, L, N)
+count(_, [], 0).
+count(A, [A|T], N) :-
+    atom(A),
+    count(A, T, N1), 
+    N is N1 + 1, !. % N is N1 + 1 should be here, after instantiation
+count(A, [_|T], N) :-
+    count(A, T, N).
+
+% Optimization
+count1(_, [], 0). % Should have this, otherwise it will be false
+count1(A, [H|T], N) :-
+    atom(H),
+    A = H,
+    count1(A, T, N1), 
+    N is N1 + 1, !. % N is N1 + 1 should be here, after instantiation
+count1(A, [_|T], N) :-
+    count1(A, T, N).
+
+% More optimization
+count11(_, [], 0).
+count11(A, [H|T], N) :-
+    atom(H),
+    A = H,
+    count11(A, T, N1),
+    N is N1 + 1, !
+    ;   
+    count11(A, T, N).
+</div>
+
+<div class="nb-cell query" name="q193">
+count(a, [b,a,c,a,a], N).
+</div>
+
+<div class="nb-cell query" name="q196">
+count(a, [b,a,c,X,Y,Z], N).
+</div>
+
+<div class="nb-cell query" name="q197">
+count1(a, [b,a,c,a,a], N).
+</div>
+
+<div class="nb-cell query" name="q198">
+count1(a, [b,a,c,X,Y,Z], N).
+</div>
+
+<div class="nb-cell query" name="q199">
+count11(a, [b,a,c,a,a], N).
+</div>
+
+<div class="nb-cell query" name="q200">
+count11(a, [b,a,c,X,Y,Z], N).
+</div>
+
+<div class="nb-cell html" name="htm88">
+<h1> 6.1.2 A cryptarithmetic puzzle using nonvar (NOT FINSHED YET, PUZZLE QUESTION) </h1>
+</div>
+
+<div class="nb-cell html" name="htm89">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p44">
+% 6.1
+% simplify(1 + 2 + a, E) == E = a + 2
+
+% extract all element
+extract(A, [A]) :-
+    not(compound(A)), !.
+extract(A + B, E) :-
+    extract(A, E1),
+    extract(B, E2),
+    conc(E1, E2, E).
+
+% calculate number and alphabet
+calculate([], 0, []).
+calculate([H|T], Num, Alp) :-
+    number(H),
+    calculate(T, Num1, Alp),
+    Num is Num1 + H, !.
+calculate([H|T], Num, [H|Alp]) :-
+    calculate(T, Num, Alp).
+
+% Need to think
+% process the alphabet
+% first judge whether in Alp
+% then
+% integrateAlp([], _, []).
+% integrateAlp([H|T], AlpList) :-
+%    member(A*H, AlpList),
+%    A1 is A + 1,
+
+% main
+simplify(L, E) :-
+    extract(L, L1),
+    calculate(L1, Num, Alp),
+    % Process Alp
+    E = Num + Alp.
+</div>
+
+<div class="nb-cell query" name="q201">
+simplify(1 + 2 + x + x + b, E).
+</div>
+
+<div class="nb-cell query" name="q202">
+member(A*H, [1*x, 2*y, 3*z]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p45">
+% 6.2 Define the procedure
+% add_to_tail1(Item, List, NewList)
+add_to_tail1(I, L, L2) :-
+    reverse(L, L1),
+    reverse([_|[I|L1]], L2).
+
+% add_to_tail(Item, List)
+% base line: put a variable; do not need to use 'reverse'
+add_to_tail([], [_]).
+add_to_tail(I, [H|T]) :-
+    var(H),
+    H = I,
+    add_to_tail([], T), !
+    ;   
+    add_to_tail(I, T).
+
+member_to_tail(A, [H|T]) :-
+    nonvar(H),	% Successful situation
+    A = H,
+    true, !
+    ; 
+    nonvar(H),	% Failure situation
+    member_to_tail(A, T), !
+    ;   
+    var(H),		% Skip situation
+    fail.
+
+/* 
+ * ===== Reference for member(X, List) =====
+ * member11111(X, [X|_]).
+ * member11111(X, [Y|H]) :-
+ * 	member11111(X, H).
+ */
+</div>
+
+<div class="nb-cell query" name="q203">
+add_to_tail1(d, [a,b,c|Tail], L2).
+</div>
+
+<div class="nb-cell query" name="q204">
+add_to_tail(d, [a,b,c|Tail]).
+</div>
+
+<div class="nb-cell query" name="q205">
+List=[a,b,c|Tail], add_to_tail(d, List).
+</div>
+
+<div class="nb-cell query" name="q206">
+List=[a,b,c|Tail], add_to_tail(d, List), member_to_tail(b, List).
+</div>
+
+<div class="nb-cell query" name="q207">
+% If member_to_tail do not exclude the var(H), it will succeed
+List=[a,b,c|Tail], add_to_tail(d, List), member_to_tail(e, List).
+</div>
+
+<div class="nb-cell html" name="htm90">
+<h1> 6.2 Constructing and decomposing terms =.., functor, arg, name </h1>
+</div>
+
+<div class="nb-cell html" name="htm91">
+1. Three built-in predicates for decomposing terms and constructing new terms: <br>
+(a) functor <br>
+(b) arg <br>
+(c) '=..' <br>
+</div>
+
+<div class="nb-cell query" name="q208">
+a =.. L.
+</div>
+
+<div class="nb-cell query" name="q209">
+f(a,b) =.. L.
+</div>
+
+<div class="nb-cell query" name="q210">
+T =.. [rectangle, 3, 5].
+</div>
+
+<div class="nb-cell query" name="q211">
+Z =.. [p, X, f(X,Y)].
+</div>
+
+<div class="nb-cell program" data-background="true" name="p46">
+% Why we need decompose a term
+square(A) :- number(A).
+triangle(A, B, C) :- number(A), number(B), number(C).
+circle(R) :- number(R).
+
+% Complicated method
+% enlarge(Fig, Factor, Fig1)
+enlarge(square(A), F, square(A1)) :-
+    A1 is F * A.
+
+% enlarge1(Fig, Factor, Fig1)
+% Some bugs, but not appear again
+enlarge1(square(A), F, square(A1)) :-
+    nonvar(A),
+    A1 is F * A, !
+    ;   
+    A is A1 / F.
+
+% More general method
+% enlargeS(Fig, Factor, Fig1), Same as book :D
+multiplyAll([], _, []).
+multiplyAll([H|T], F, [H1|T1]) :-
+    H1 is H * F,
+    multiplyAll(T, F, T1).
+
+% enlarge(Type(Par), F, Type(Par1)) is not allowed
+% because the functor should be a atom
+enlargeS(Fig, F, Fig1) :-
+    Fig =.. [H|Arg],
+    % First multiplyAll then instantiation
+    multiplyAll(Arg, F, Arg1),
+    Fig1 =.. [H|Arg1].
+</div>
+
+<div class="nb-cell query" name="q212">
+enlarge(square(1), 5, square(A1)).
+</div>
+
+<div class="nb-cell query" name="q213">
+enlarge(square(A), 5, square(5)).
+</div>
+
+<div class="nb-cell query" name="q214">
+enlarge1(square(1), 5, square(A1)).
+</div>
+
+<div class="nb-cell query" name="q215">
+enlarge1(square(A), 5, square(5)).
+</div>
+
+<div class="nb-cell query" name="q216">
+enlargeS(square(1), 5, square(A1)).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p47">
+% Substitution
+% substitute(Subterm, Term, Subterm1, Term1)
+% Case 1: Substitute whole term
+substitute(X, X, X1, X1) :- !.
+
+% Case 2: Nothing to substitute if Term atomic
+substitute(_, Term, _, Term) :- 
+    atomic(Term), !.
+
+% Case 3: Do substitution on arguments
+substitute(Sub, Term, Sub1, Term1) :-
+    Term =.. [F | Args],
+    substlist(Sub, Args, Sub1, Args1),
+    Term1 =.. [F | Args1], !.
+
+% Helper: go down layer by layer
+substlist(_, [], _, []).
+
+% Helper: go down layer by layer
+% If compound, then make simple A = A 
+% to more complicated predicates
+substlist(Sub, [Term|Terms], Sub1, [Term1|Terms1]) :-
+    substitute(Sub, Term, Sub1, Term1),
+    substlist(Sub, Terms, Sub1, Terms1).
+</div>
+
+<div class="nb-cell query" name="q217">
+substitute(sin(x), 2*sin(x)*f(sin(x)), t, F).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p48">
+% Define the evaluation predicate
+% eval(Exp, SymbolValues, Val)
+
+eval(Exp, SymbolValues, Val) :-
+    subst_symbols(Exp, SymbolValues, Exp1),
+    Val is Exp1.
+
+% Need to instantiation at the base line
+subst_symbols(Exp, [], Exp) :- !.
+% Recursive line
+subst_symbols(Exp, [V|SV], Exp1) :-
+    V =.. [_, Symbol, Value],
+    substitute(Symbol, Exp, Value, TemExp),
+    subst_symbols(TemExp, SV, Exp1).
+    
+% Book programming style
+subst_symbols1(Exp, [], Exp) :- !.
+subst_symbols1(Exp, [Symbol = Value|SV], Exp1) :-
+    substitute(Symbol, Exp, Value, TemExp),
+    subst_symbols1(TemExp, SV, Exp1).
+</div>
+
+<div class="nb-cell query" name="q218">
+subst_symbols(a+b, [a=1, b=2], Exp1).
+</div>
+
+<div class="nb-cell query" name="q222">
+subst_symbols1(a+b, [a=1, b=2], Exp1).
+</div>
+
+<div class="nb-cell query" name="q219">
+eval(a+b, [a=1, b=2], Val).
+</div>
+
+<div class="nb-cell query" name="q220">
+eval(x*sin((x+y)/2), [x=1, y=2.14], Val).
+</div>
+
+<div class="nb-cell query" name="q221">
+% Normally, for a typical question
+% obtain(Functor), - user-defined
+% compute(Arglist), - user-defined
+% Goal =.. [Funcotr|Arglist],
+% call(Goal).
+
+% Do not know how to use call()
+% Goal =.. [plus, 1, 2, R], call(plus(1,2,R), R).
+</div>
+
+<div class="nb-cell query" name="q223">
+% More efficient to use functor(Term, F, N) and arg(N, Term, A)
+functor(member(a, [c,b,a]), Functor, NumOfA).
+</div>
+
+<div class="nb-cell query" name="q224">
+% More efficient to use functor(Term, F, N) and arg(N, Term, A)
+% Generate a date D with 3 uninstantiated variables
+functor(D, date, 3),
+% Instantiate all variables in date D
+arg(1, D, 5),
+arg(2, D, january),
+arg(3, D, 2021).
+</div>
+
+<div class="nb-cell query" name="q225">
+% ASCII code
+% name(A, L)
+% is true if L is the list of ASCII codes of the characters in atom A
+name(abc, ASCII), name(Atom, [97,98,99,100]).
+% ASCII a = 97, b = 98, c = 99, d = 100
+</div>
+
+<div class="nb-cell html" name="htm92">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p49">
+% 6.3 
+% Define the predicate
+% ground(Term)
+% is true if Term does not contain any uninstantiated variables
+
+ground1([]).
+ground1([H|T]) :-
+    nonvar(H),
+    ground1(T).
+</div>
+
+<div class="nb-cell query" name="q226">
+ground1([a,b,c,d,e]).
+</div>
+
+<div class="nb-cell query" name="q227">
+ground1([a,b,c,d,e,QICQ]).
+</div>
+
+<div class="nb-cell program" name="p50">
+% 6.4 
+% Optimize the exist predicate
+% substitue(SubTerm, Term, SubTerm1, Term1)
+% Looks DIFFICULT, DID NOT DO!!
+</div>
+
+<div class="nb-cell program" name="p51">
+% 6.5 
+% Define the relation
+% subsumes(Term1, Term2)
+% true if Term1 is more general than Term2
+% DO NOT UNDERSTAND WHAT IT MEANS, DID NOT DO!!
+</div>
+
+<div class="nb-cell html" name="htm93">
+<h1> 6.3 Various kinds of equality and comparison </h1>
+</div>
+
+<div class="nb-cell query" name="q228">
+% Three kinds of equality in Prolog
+% X = Y
+% true when X and Y match
+
+% X is E
+% true when X matches the value of the arithmetic expression E
+% E should be instantiated
+% X should be uninstantiated
+
+% E1 =:= E2
+% true if the values of the arithmetic expression E1 and E2 are equal
+
+% E1 =\= E2
+% true if the values of the arithmetic expression E1 and E2 are not equal
+
+% T1 == T2
+% true if term T1 and T2 are literally identical
+
+% T1 \== T2
+% true if term T1 and T2 are not literally identical
+</div>
+
+<div class="nb-cell query" name="q229">
+% literally equal '=='
+f(a, X) == f(a, X).
+</div>
+
+<div class="nb-cell query" name="q230">
+% literally not equal '\=='
+f(a, X) \== f(a, X).
+</div>
+
+<div class="nb-cell query" name="q231">
+% literally not equal '\=='
+f(a, X) \== f(a, Y).
+</div>
+
+<div class="nb-cell query" name="q232">
+% literally not equal '\=='
+X = Y, f(a, X) == f(a, Y).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p52">
+% Redefine the relation
+% count(Term, List, N)
+% Becomes literally identical, also for the variable
+
+countL(_, [], 0).
+countL(Ob, [H|T], N) :-
+    Ob == H,
+    countL(Ob, T, N1),
+    N is N1 + 1, !
+    ;   
+    countL(Ob, T, N).
+</div>
+
+<div class="nb-cell query" name="q233">
+countL(a, [b,c,a,a,a,a], N).
+</div>
+
+<div class="nb-cell query" name="q234">
+countL(Y, [b,c,a,X,Y,Y,A], N).
+</div>
+
+<div class="nb-cell query" name="q235">
+member(X, [1,2,3,4,5,6,7]) ,X + 2 &lt; 8.
+</div>
+
+<div class="nb-cell query" name="q236">
+% compare terms arithmetically
+% X @&lt; Y
+% p = p
+% a &lt; e
+paul @&lt; peter.
+
+% All the built-in predicates 
+% 1. @&lt;
+% 2. @=&lt;
+% 3. @&gt;
+% 4. @&gt;=
+% P.S. DO NOT HAVE @= !!
+</div>
+
+<div class="nb-cell query" name="q237">
+% p = p
+% g &gt; e
+pgul @&lt; peter.
+</div>
+
+<div class="nb-cell query" name="q238">
+f(2) @&lt; f(3).
+</div>
+
+<div class="nb-cell query" name="q239">
+g(2) @&lt; f(3).
+</div>
+
+<div class="nb-cell query" name="q240">
+a(2) @&lt; f(3)
+</div>
+
+<div class="nb-cell query" name="q241">
+% a = a
+% g(X) &lt; h(X)
+f(a, g(b), c) @&lt; f(a, h(a), a).
+</div>
+
+<div class="nb-cell query" name="q242">
+a @=&lt; a.
+</div>
+
+<div class="nb-cell html" name="htm94">
+<h1> 6.4 Database manipulation </h1>
+</div>
+
+<div class="nb-cell query" name="q243">
+% A Prolog Program can be viewd as such a database:
+% 1. partly explicit = facts
+% 2. partly implicit = rules
+% Predicates
+% 1. assert
+% 2. asserta
+% 3. assertz
+% 4. retract
+
+% aseert(C) if succeeds = added a goal C to the database
+% retract(C) if succeeds = delete a goal C from the database
+
+% Aim: acts like a caching or stors the facts
+% Memoization!!!
+</div>
+
+<div class="nb-cell program" data-background="true" name="p53">
+% A robot situation
+% Facts:
+% on(Block, something)
+
+% For assert/1 and retract/1
+% assert/1 automatically assumed as dynamic
+:- dynamic on/2.
+
+on(a,b).
+on(b,table).
+on(c,table).
+
+move(X, Y, Z) :-
+    retract(on(X,Y)),
+    assert(on(Y,Z)).
+</div>
+
+<div class="nb-cell query" name="q244">
+retract(on(a,b)), assert(on(a,table)), on(a,Where).
+</div>
+
+<div class="nb-cell query" name="q245">
+move(a,b,c).
+</div>
+
+<div class="nb-cell query" name="q246">
+member11(a, [b,c,a]).
+</div>
+
+<div class="nb-cell program" name="p54">
+% Problem
+% No permission to call sandboxed `assert(_1606)'
+
+:- dynamic member11/2.
+
+member11T(Member, List) :-
+    assert(member11(H, [H|_])),
+	assert(member11(H1, [_|T]) :- member(H1, T)),
+    member11(Member, List).
+</div>
+
+<div class="nb-cell query" name="q247">
+% aseert/1 cannot only applied on facts, but also the rules
+member11T(a, [b,c,a]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p55">
+% Remove all on(X,Y)
+% :- retract(on(_,_)), fail.
+
+% when retract succeeds, the fail comes
+% and backtrack again, and retract new one, then fail comes
+% will automatically go through this till all the on(_,_) have been
+% reached
+</div>
+
+<div class="nb-cell query" name="q248">
+% Remove all on(X,Y)
+on(c,table).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p56">
+% Configuration for the assert, retract
+:- dynamic p1/1.
+:- dynamic solve/2.
+</div>
+
+<div class="nb-cell query" name="q249">
+% Controlling the position of the adding clause
+% assert, end of the current database (specific sequence)
+% asserta, begin of the whole database
+% assertz, end of the whole database
+trace, assert(p1(first)), assertz(p1(end)), asserta(p1(start)), assert(p1(second)), p1(X).
+</div>
+
+<div class="nb-cell query" name="q250">
+% Can be used as caching/ storage.
+asserta(solve(problem1, solution1)), asserta(solve(problem1, solution2)), solve(problem1, Solutions).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p57">
+% Program that makes product between 0 - 9 and store them
+% Carefully use otherwise bad programming style
+
+:- dynamic product/3.
+
+% product(_,_,_).
+maketable :-
+    L = [0,1,2,3,4,5,6,7,8,9],
+    member(X, L),
+    member(Y, L),
+    Z is X * Y,
+    assert(product(X,Y,Z)),
+    fail.
+
+translate(X*Y=Z) :-
+    product(X,Y,Z).
+</div>
+
+<div class="nb-cell query" name="q251">
+not(maketable), translate(X*Y=8).
+</div>
+
+<div class="nb-cell html" name="htm95">
+<b> Exercise </b> <br>
+</div>
+
+<div class="nb-cell program" name="p58">
+% 6.6
+% use of assert and retrive
+</div>
+
+<div class="nb-cell program" name="p59">
+% 6.7 
+% Define the relation
+% copy_term(Term, Copy)
+% copy Term to Copy, 
+% with same atoms and structured and renamed variables
+</div>
+
+<div class="nb-cell html" name="htm96">
+<h1> 6.5 Control facilities </h1>
+</div>
+
+<div class="nb-cell query" name="q252">
+% once/1 only produce one solution
+once(member(X, [1,2,3])).
+</div>
+
+<div class="nb-cell query" name="q253">
+% fail is a goal always fail
+X = 1, fail.
+</div>
+
+<div class="nb-cell query" name="q254">
+% true is a goal always true
+X = 1, true.
+</div>
+
+<div class="nb-cell query" name="q255">
+% not(P) is negation as failure
+not(fail), X=1.
+</div>
+
+<div class="nb-cell query" name="q256">
+% (P -&gt; Q ; R)
+% like Condition ? Solution1 : Solution2
+% parentheses needed for more solutions
+X = 1, member(Y, [0, 2]), (X &gt; Y -&gt; R = 'X&gt;Y' ; R = 'X=&lt;Y').
+</div>
+
+<div class="nb-cell program" name="p60">
+% Definition of (P -&gt; Q;R)
+% (P -&gt; Q;R) :- P, !, Q.
+% (P -&gt; Q;R) :- R.
+% No different for
+% (P -&gt; Q;R) :- P, Q, !.
+% (P -&gt; Q;R) :- R.
+% Or?
+% (P -&gt; Q;R) :- !, P, Q.
+% (P -&gt; Q;R) :- R.
+</div>
+
+<div class="nb-cell query" name="q257">
+% call(P) invokes a goal P. 
+% It succeeds if P succeeds.
+call(X=1).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p61">
+% fail -&gt; for cycling
+% repeat -&gt; for cycling, generation of another branch
+% ! -&gt; for stopping the program
+dosquares :-
+    repeat,
+    read(X),
+    (
+    X = stop, !
+    ;   
+    Y is X*X, write(Y),
+    fail
+    ).
+</div>
+
+<div class="nb-cell query" name="q258">
+dosquares.
+</div>
+
+<div class="nb-cell html" name="htm97">
+<h1> 6.6 bagof, setof and findall </h1>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p62">
+% Sometimes we would prefer to have all the generated 
+% solutions avaiable together - for example collected into a list
+% BUILT-IN: bagof, setof, findall 
+
+% bagof(X, P, L)/3
+% will produce the list L of all the objects X 
+% such that a goal P is satisfied
+
+age(peter, 7).
+age(ann, 5).
+age(pat, 8).
+age(tom, 8).
+</div>
+
+<div class="nb-cell query" name="q259">
+% Obtain all solution and collect
+bagof(Child, age(Child, 8), Children).
+</div>
+
+<div class="nb-cell program" name="p63">
+% Need to think!!
+% Actually we can program bagof/3 by ourselves
+% bagof(X, age(X,Y), [X|T]) :-
+%   bagof()
+</div>
+
+<div class="nb-cell query" name="q260">
+% Go through all the children
+bagof(Child, age(Child, Age), Children).
+</div>
+
+<div class="nb-cell query" name="q261">
+% Only produce Children, match Child
+bagof(Child, Age^age(Child, Age), Children).
+</div>
+
+<div class="nb-cell query" name="q262">
+% only produce Age, match Age
+bagof(Age, Child^age(Child, Age), Children).
+</div>
+
+<div class="nb-cell query" name="q263">
+% Werid to use '^'
+member(age(Name,Age),[age(coco,18),age(kiki,17),age(ququ,19)]).
+</div>
+
+<div class="nb-cell query" name="q264">
+% Werid to use '^'
+member(Name^age(Name,Age),[age(coco,18),age(kiki,17),age(ququ,19)]).
+</div>
+
+<div class="nb-cell query" name="q265">
+% Werid to use '^'
+member(Age^age(Name,Age),[age(coco,18),age(kiki,17),age(ququ,19)]).
+</div>
+
+<div class="nb-cell query" name="q266">
+% bagof/3 will contain duplicate items in L
+
+% setof/3 will not contain duplicate items in L 
+% and also the elements will be ordered
+
+setof(Child, age(Child, Age), Children).
+</div>
+
+<div class="nb-cell query" name="q267">
+% Collection of childList and ageList
+setof(Child, Age^age(Child, Age), ChildList),
+setof(Age, Child^age(Child, Age), AgeList).
+</div>
+
+<div class="nb-cell query" name="q268">
+% No restriction on the kind of objects that are collected
+bagof(Child/Age, age(Child,Age), Children).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p64">
+% Another predicate of this family
+% findall/3 is similar to bagof
+% findall(X, P, L)
+
+% Implementation of findall
+% findall1/3
+findall1(X, Goal, Xlist) :-
+    call(Goal),
+    assertz(queue(X)),		% saving in the database
+    fail; 					% try to find more solutions
+    assertz(queue(bottom)),	% mark for end point of queue
+    collect1(Xlist).		% collect for Xlist
+
+collect1(L) :-
+    retract(queue(X)), !,				% extracting from the database
+    (   X == bottom, !, L=[]			% end point of queue
+    ;   
+    L = [X | Rest], collect1(Rest)).	% put into the Xlist
+</div>
+
+<div class="nb-cell query" name="q269">
+findall1(Child/Age, age(Child,Age), Children).
+</div>
+
+<div class="nb-cell query" name="q270">
+% Different, 
+% bagof/3 all solution, Age and Child
+% findall/3 only needed solutions, Age or Child or Age/Child
+
+findall(Child, age(Child, Age), Children).
+</div>
+
+<div class="nb-cell query" name="q271">
+% If there is no object X that satisfies P then findall with succeed with L = [].
+findall(Child, age(Child, 0), Children).
+</div>
+
+<div class="nb-cell program" name="p65">
+% 6.8
+% Define powerset(Set, Subsets) by bagof
+% to compute the set of all subsets of a given set 
+% (all sets represened as lists)
+</div>
+
+<div class="nb-cell program" name="p66">
+% 6.9
+% Define the relation
+% copy_term(Term, Copy)
+% Copy is Term with all its variables renamed
+copy_term1(Term, Copy) :-
+    bagof(X, copy_term1_member(X, Term), Copy).
+
+copy_term1_member(_, [Y|_]) :-
+    var(Y).						% Cannot put '!', this is the same level
+copy_term1_member(X, [X|_]) :-
+    nonvar(X).
+copy_term1_member(X, [_|T]) :-
+    copy_term1_member(X, T).
+</div>
+
+<div class="nb-cell query" name="q272">
+copy_term1([a,b,c,X,d,Y], Copy).
+</div>
+
+<div class="nb-cell query" name="q273">
+copy_term1_member(X, [a,b,c,Y,Q,d]).
+</div>
+
+<div class="nb-cell query" name="q274">
+member1(X, [a,b,c,d]).
+</div>
+
+<div class="nb-cell html" name="htm98">
+<h1> 6.7 Input and output </h1>
+</div>
+
+<div class="nb-cell html" name="htm99">
+<h2> 6.7.1 Communication with files </h2>
+</div>
+
+<div class="nb-cell query" name="q275">
+% see = input stream
+% tell = output stream
+
+% seen = closes the current input file
+% told = closes the current ouput file
+
+% read_from_file(Information) reads something from file
+% write_on_file(Information) writes something on file
+
+% a single character to be read or written
+% get, get0, put
+
+% read
+% write
+
+% deterministic - no backtracking
+% non-deterministic - backtracking
+
+% tab(N), insert spaces and new lines
+% nl = causes the start of a new line at output
+</div>
+
+<div class="nb-cell html" name="htm101">
+<h2> 6.7.2 Processing files of terms </h2>
+</div>
+
+<div class="nb-cell query" name="q276">
+read(X), X =:= 1.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p67">
+% cube(N, C)
+% C is N*N*N
+cube(N, C) :-
+    C is N * N * N.
+</div>
+
+<div class="nb-cell query" name="q277">
+cube(3,C).
+</div>
+
+<div class="nb-cell query" name="q278">
+write('test').
+</div>
+
+<div class="nb-cell program" data-background="true" name="p68">
+% cube program
+% This one is incorrect
+/*cube :-
+    write('Next item, please:'),
+    read(Number),
+    Number = stop
+    ; 
+    cube(Number,Cube),
+    write('Cube of '),
+    write(Number),
+    write(' is '),
+    write(Cube),
+    cube. */
+    
+% This one is correct repeat + fail
+% put read/1 before judge.
+cube :-
+    repeat,
+    write('Next item, please:'),
+    read(Number),
+    (
+    Number = stop, !
+    ;   
+    cube(Number, Cube),
+    write('Cube of '), write(Number), write(' is '),
+    write(Cube), nl,
+    fail).
+    
+% Reference
+/*dosquares :-
+    repeat,
+    read(X),
+    (
+    X = stop, !
+    ;   
+    Y is X*X, write(Y),
+    fail
+    ).*/
+
+cube1 :-
+    write('Next item, please: '),
+    read(X),
+    process(X).
+
+process(stop) :-	% Honestly, this is the simplest expression.
+    !.
+process(N) :-
+    cube(N, C),
+    write('Cube of '), write(N), write(' is '),
+    write(C), nl,
+    cube1.
+</div>
+
+<div class="nb-cell query" name="q279">
+cube.
+</div>
+
+<div class="nb-cell query" name="q280">
+cube1.
+</div>
+
+<div class="nb-cell program" data-background="true" name="p69">
+% Define the predicate
+% writelist(L)
+% each of elements in List l can be written on a separate line
+writelist([]).
+writelist([H|T]) :-
+    write(H),
+    nl,
+    writelist(T).
+</div>
+
+<div class="nb-cell query" name="q281">
+writelist([a,b,c,d]).
+</div>
+
+<div class="nb-cell query" name="q282">
+writelist([[a,b,c], [d,e,f], [g,h,i]]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p70">
+% Define the relation
+% writelist1(L)
+% each of elemetns in List l can be written on a separate line
+% even a list
+writelist1([]).			% end of file
+writelist1([H|T]) :-
+    compound(H),
+    writelist1(H),		% extract from compound
+    writelist1(T), !.
+writelist1([H|T]) :-
+    write(H), nl,		% process method
+    writelist1(T).
+</div>
+
+<div class="nb-cell query" name="q283">
+writelist1([[a,b,c],[d,e,f],[g,h,i]]).
+</div>
+
+<div class="nb-cell query" name="q284">
+writelist1([a,b,c,d]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p71">
+% A list of integer numbers can be shown as a bar graph
+% bars([3,4,6,5])
+
+% Very similar to the answer, except 
+% bars_process(N) :- N =&lt; 0.
+bars_process(0) :- !.
+bars_process(N) :-
+    N &gt; 0,
+    N1 is N - 1,
+    write('*'),
+    bars_process(N1).
+    
+bars([]) :- !.
+bars([H|T]) :-
+    integer(H),
+    bars_process(H), nl,
+    bars(T).
+</div>
+
+<div class="nb-cell query" name="q285">
+bars([3,4,6,5,7,4,10]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p72">
+% Algorithm
+/*
+ * processfile :-
+ * 	read(Term),
+ * 	process(Term).
+ * 
+ * process(end_of_file) :- !.
+ * 
+ * process(Term) :-
+ * 	treat(Term),
+ * 	processfile.
+ */
+
+showfile(N) :-
+    read(Term),
+    show(Term, N).
+
+show(end_of_file, _) :- !.
+
+show(Term, N) :-
+    write(N), write('  '), write(Term), nl,
+    N1 is N - 1,
+    showfile(N1).
+</div>
+
+<div class="nb-cell query" name="q286">
+showfile(5).
+</div>
+
+<div class="nb-cell program" name="p73">
+% 6.10
+% Let f be a file of terms. 
+% Define a procedure
+% findterm(Term)
+% that displays on the monitor the first term in f that matches Term
+</div>
+
+<div class="nb-cell program" name="p74">
+% 6.11
+% Let f be a file of term.
+% Define a procedure
+% findallterms(Term)
+% that displays on the monitor all the terms in f that matches Term
+% Make sure that Term is not instantiated in the process
+</div>
+
+<div class="nb-cell html" name="htm100">
+<h2> 6.7.3 Processing files of characters </h2>
+</div>
+
+<div class="nb-cell query" name="q287">
+% put(X), ASCII
+put(65), put(66).
+
+% read for a single character (including blank chacaters)
+% return ASCII
+get0(C)
+
+% read for a single character (only non-blank chacters)
+% will skip over of all non-printable characters (e.g., blank)
+get(C)
+</div>
+
+<div class="nb-cell program" name="p75">
+% Looks werid
+% Input: The robot tried to pour wine out of the bottle.
+% Resulst: The robot tried to pout wine out of the bootle.
+
+% This program looks werid
+/*
+ * squeeze :-
+ * 	get0(C),
+ * 	put(C),
+ * 	dorest(C).
+ * 
+ * dorest(46) :- !.
+ * dorest(32) :- !, % HERE WERID??!!
+ * 	get(C),
+ * 	put(C),
+ * 	dorest(C).
+ * dorest(Letter) :-
+ * 	squeeze.
+ */
+</div>
+
+<div class="nb-cell program" name="p76">
+% 6.12
+% Description:
+% Generalize the squeeze procedure to handle commas as well.
+% All blanks immediately prceding a comma are to be removed,
+% and we want to have one blank after each comma.
+</div>
+
+<div class="nb-cell html" name="htm102">
+<h2> 6.7.4 Constructing and decomposing atoms </h2>
+</div>
+
+<div class="nb-cell query" name="q288">
+% true if L is the list of ASCII codes of the characters
+% name(A,L)
+name(abc,L), name(A, [97,98,99]).
+</div>
+
+<div class="nb-cell program" data-background="true" name="p77">
+% Define the predicate
+% getsentence(Wordlist)
+
+% Some PROBLEMS HERE!!
+% P172 - P173
+getsentence_retract([L|Sentence]) :-
+    not(retract(sentence(end_of_file))),
+    retract(sentence(L)),
+    getsentence_retract(Sentence), !.
+getsentence_retract([]) :-
+    retract(sentence(end_of_file)).
+
+getsentence([]) :- 
+    assertz(sentence(end_of_file)),
+    getsentence_retract(Sentence),
+    name(H, Sentence),
+    write(H),
+    !.
+getsentence([H|T]) :-
+    name(H,L),
+    assertz(sentence(L)),
+    getsentence(T).
+</div>
+
+<div class="nb-cell query" name="q289">
+% combing the characters into atoms.
+% getsentence(Wordlist)
+getsentence(['Hello', 'World', '!']).
+</div>
+
+<div class="nb-cell html" name="htm103">
+<b> Exercise </b>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p78">
+% 6.13 
+% Define the relation
+% starts(Atom, Character)
+
+starts(Atom, Character) :-
+    name(Atom, [H|_]),
+    name(Character, [C|[]]),
+    H = C.
+</div>
+
+<div class="nb-cell query" name="q290">
+starts(abc,a).
+</div>
+
+<div class="nb-cell query" name="q291">
+starts(bca,a).
+</div>
+
+<div class="nb-cell program" name="p79">
+% 6.14
+% Define the procedure plural that will convert nouns 
+% into their plural form.
+% For example:
+% single -- plural
+
+plural(Term, Terms) :-
+    write('Do not consider the special case!'),
+    name(Term, TL),
+    conc(TL, [115] ,TL1),
+    name(Terms, TL1).
+</div>
+
+<div class="nb-cell query" name="q292">
+plural(table, X).
+</div>
+
+<div class="nb-cell program" name="p80">
+% 6.15 
+% Define the predicate
+% search(KeyWord, Sentence)
+</div>
+
+<div class="nb-cell html" name="htm104">
+<h2> 6.7.5 Reading programs </h2>
+</div>
+
+<div class="nb-cell query" name="q293">
+% Read a program from a file F
+% All load into the memory
+% consult(F).
+% or simply be written as [F].
+
+% Compile, mostly for development
+% compile(program3)
+
+% Compiled programs are more efficiently executed, 
+% but interpreted programs are easier to debug because they can be 
+% inspected and traced by Prolog's debugging facilities.
+
+% Therefore, an interpreter is typically for development phase
+% a compiler is for the final program
+</div>
+
+<div class="nb-cell html" name="htm105">
+<h1> Summary: Chapter 6 </h1>
+</div>
+
+<div class="nb-cell html" name="htm106">
+1. Many useful built-in predicates are introduced, and most of them are implemented in most Prolog. <br>
+</div>
+
+<div class="nb-cell program" name="p81">
+/*
+ * ===== Type =====
+ * var(X)		X is a (non-instantiated) variable
+ * nonvar(X)	X is not a variable
+ * atom(X)		X is an atom
+ * integer(X)	X is an integer
+ * float(X)		X is a real number
+ * atomic(X)	X is either an atom or a number
+ * compound(X)	X is a structure
+ */
+</div>
+
+<div class="nb-cell program" name="p82">
+/*
+ * ===== Construction &amp; Decomposition of Term =====
+ * Term =.. [Functor | ArgumentList]
+ * functor(Term, Functor, Arity)
+ * arg(N, Term, Argument)
+ * name(Atom, CharacterCodes)
+ */
+</div>
+
+<div class="nb-cell program" name="p83">
+/*
+ * ===== Comparison of Terms =====
+ * X = Y	X an Y match
+ * X == Y	X and Y are identical
+ * X \== Y	X and Y are not identical
+ * X =:= Y	X and Y are arithmetically equal
+ * X =\= Y	X and Y are not arithmetically equal
+ * X &lt; Y	arithmetic value of X is less than Y (related: =&lt;, &gt;, &gt;=)
+ * X @&lt; Y	term X precedes term Y (sequency related: @=&lt;, @&gt;, @&gt;=)
+ */
+</div>
+
+<div class="nb-cell program" name="p84">
+/*
+ * ===== Database =====
+ * assert(Clause) 	add Clause to the program (not specific position)
+ * asserta(Clause) 	add at the begining
+ * assertz(Clause) 	add at the end
+ * retract(Cluase) 	remove a clause that matches Clause
+ */
+</div>
+
+<div class="nb-cell program" name="p85">
+/*
+ * ===== Collection of Solutions =====
+ * bagof(X, P, L)	L is the list of all X that satsify condition P
+ * setof(X, P, L)	L is the set of all X that satisfy condition P
+ * findall(X, P, L)	similar to bagof, but no run redundant clauses
+ */
+</div>
+
+<div class="nb-cell program" name="p86">
+/*
+ * ===== Control Facilities =====
+ * repeat	generates an unlimited number of alertatives for backtracking
+ */
+</div>
+
+<div class="nb-cell program" name="p89">
+/*
+ * ===== Switching between streams =====
+ * see(File)	File becomes the current input stream
+ * tell(file)	File becomes the current output stream
+ * seen			close the current input stream
+ * told			close the current output stream
+ */
+</div>
+
+<div class="nb-cell program" name="p87">
+/*
+ * ===== Reading &amp; Writing characters and terms =====
+ * read(Term)		input next term
+ * write(Term)		output Term
+ * put(CharCode)	output character with the given ASCII code
+ * get0(CharCode)	input next character	
+ * get(CharCode)	input next 'printable' character
+ */
+</div>
+
+<div class="nb-cell program" name="p88">
+/*
+ * ===== Writing format =====
+ * nl		output new line
+ * tab(N)	output N blanks
+ */
+</div>
+
+<div class="nb-cell html" name="htm107">
+<h1> Chapter 8: Programming Style and Technique </h1>
+</div>
+
+<div class="nb-cell html" name="htm108">
+<h1> 8.1 General principles of good programming </h1>
+</div>
+
+<div class="nb-cell program" data-background="true" name="p90">
+diff_number([],0) :- !.
+diff_number(L,N) :-
+    remove_all(_,L,L1),
+    diff_number(L1,N1),
+    N is N1 + 1.
+
+remove_all(_, [], []) :- !.
+remove_all(X, [X|T], L1) :-
+    remove_all(X, T, L1), !.
+remove_all(X, [Y|T], [Y|T1]) :-
+    remove_all(X,T,T1).
+</div>
+
+<div class="nb-cell query" name="q294">
+diff_number([x,q,a,x,x,a], N).
+</div>
+
+</div>
